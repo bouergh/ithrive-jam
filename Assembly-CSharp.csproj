@@ -55,6 +55,11 @@
   <ItemGroup>
      <Compile Include="Assets\PlayerMovement.cs" />
      <Compile Include="Assets\Scripts\Networking\PlayerMovementNetwork.cs" />
+     <Compile Include="Assets\VolumetricLight.cs" />
+     <Compile Include="Assets\VolumetricLightRenderer.cs" />
+     <None Include="Assets\BlitAdd.shader" />
+     <None Include="Assets\VolumetricLight.shader" />
+     <None Include="Assets\BilateralBlur.shader" />
  <Reference Include="UnityEditor.StandardEvents">
  <HintPath>S:/bouergh/Documents/Unity/ithrive-jam/Library/ScriptAssemblies/UnityEditor.StandardEvents.dll</HintPath>
  </Reference>
