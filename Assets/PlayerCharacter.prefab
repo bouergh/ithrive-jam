@@ -658,7 +658,7 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RenderingLayerMask: 4294967295
   m_Materials:
-  - {fileID: 2100002, guid: ef0691902303844a79f56cc48a390c3f, type: 3}
+  - {fileID: 2100000, guid: c9e6294c9d11cb8d11006bf944295342, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -728,7 +728,7 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RenderingLayerMask: 4294967295
   m_Materials:
-  - {fileID: 2100000, guid: ef0691902303844a79f56cc48a390c3f, type: 3}
+  - {fileID: 2100000, guid: 6140f052017b44aef9be5792525fad2c, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -979,8 +979,8 @@ Light:
   m_Enabled: 1
   serializedVersion: 8
   m_Type: 0
-  m_Color: {r: 1, g: 0.06575368, b: 0, a: 1}
-  m_Intensity: 18
+  m_Color: {r: 0.54901963, g: 0.11372549, b: 0.08235294, a: 1}
+  m_Intensity: 18.65
   m_Range: 40.97
   m_SpotAngle: 18
   m_CookieSize: 10
@@ -1056,7 +1056,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 13
-  lightIntensity: 18
+  lightIntensity: 50
 --- !u!114 &114355707841574048
 MonoBehaviour:
   m_ObjectHideFlags: 1
