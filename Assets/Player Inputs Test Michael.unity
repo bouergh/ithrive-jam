@@ -265,21 +265,6 @@ Prefab:
       propertyPath: m_RootOrder
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 23479890463399156, guid: f1dd5e45df6de430390f6bff4e0662ff,
-        type: 2}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 2100000, guid: 6140f052017b44aef9be5792525fad2c, type: 2}
-    - target: {fileID: 23243701497920876, guid: f1dd5e45df6de430390f6bff4e0662ff,
-        type: 2}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 2100000, guid: c9e6294c9d11cb8d11006bf944295342, type: 2}
-    - target: {fileID: 108038302772601156, guid: f1dd5e45df6de430390f6bff4e0662ff,
-        type: 2}
-      propertyPath: m_Intensity
-      value: 18.65
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f1dd5e45df6de430390f6bff4e0662ff, type: 2}
   m_IsPrefabAsset: 0
@@ -555,27 +540,6 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1367559176}
   m_Mesh: {fileID: 4300010, guid: 99c101f98ea4646c18245015575fee6e, type: 3}
---- !u!1 &1368179861 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1979510930099112, guid: f1dd5e45df6de430390f6bff4e0662ff,
-    type: 2}
-  m_PrefabInternal: {fileID: 827346555}
---- !u!45 &1368179867
-Skybox:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1368179861}
-  m_Enabled: 1
-  m_CustomSkybox: {fileID: 0}
---- !u!45 &1368179868
-Skybox:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1368179861}
-  m_Enabled: 1
-  m_CustomSkybox: {fileID: 0}
 --- !u!1 &1416494372
 GameObject:
   m_ObjectHideFlags: 0
