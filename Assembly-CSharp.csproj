@@ -54,7 +54,11 @@
   </ItemGroup>
   <ItemGroup>
      <Compile Include="Assets\PlayerMovement.cs" />
+     <Compile Include="Assets\Scripts\EnemyGenerator.cs" />
+     <Compile Include="Assets\Scripts\EnemyMovement.cs" />
+     <Compile Include="Assets\Scripts\Health.cs" />
      <Compile Include="Assets\Scripts\Networking\PlayerMovementNetwork.cs" />
+     <Compile Include="Assets\Scripts\ObjectPooler.cs" />
      <Compile Include="Assets\Scripts\Tools\TransformDeepChildExtension.cs" />
      <Compile Include="Assets\VolumetricLight.cs" />
      <Compile Include="Assets\VolumetricLightRenderer.cs" />

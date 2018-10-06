@@ -21,9 +21,10 @@ public class EnemyGenerator : MonoBehaviour {
         InvokeRepeating("Spawn", spawnTime, spawnTime);
     }
 
-    IEnumerable Spawn()
+    void Spawn()
     {
-        yield return new WaitForSeconds(Random.Range(0f, 2f));
+        //yield return new WaitForSeconds(Random.Range(0f, 2f));
+        
         //spawn at a random edge
         Vector3 position;
         Quaternion rotation;
