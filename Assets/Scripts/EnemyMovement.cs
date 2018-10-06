@@ -4,14 +4,14 @@ using UnityEngine;
 
 public class EnemyMovement : MonoBehaviour
 {
-    const int MIN_X = -40;
-    const int MAX_X = 40;
-    const int MIN_Z = -40;
-    const int MAX_Z = 40;
+    const int MIN_X = -10;
+    const int MAX_X = 10;
+    const int MIN_Z = -10;
+    const int MAX_Z = 10;
 
     public float vitesse;
 
-    Vector3 PlayerPosition = new Vector3(4, 1, -5);
+    Vector3 PlayerPosition = new Vector3(0, 0, 0);
 
     // Use this for initialization
     void Start()

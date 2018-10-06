@@ -7,10 +7,10 @@ using System.Collections.Generic;
 
 public class EnemyGenerator : MonoBehaviour {
 
-    const int MIN_X = -40;
-    const int MAX_X = 40;
-    const int MIN_Z = -40;
-    const int MAX_Z = 40;
+    const int MIN_X = -10;
+    const int MAX_X = 10;
+    const int MIN_Z = -10;
+    const int MAX_Z = 10;
 
     public float spawnTime=1f;
     public List<string> tags;
@@ -18,11 +18,12 @@ public class EnemyGenerator : MonoBehaviour {
     // Use this for initialization
     void Start()
     {
-        InvokeRepeating("Spawn", 3f, 3f);
+        InvokeRepeating("Spawn", spawnTime, spawnTime);
     }
 
-    void Spawn()
+    IEnumerable Spawn()
     {
+        yield return new WaitForSeconds(Random.Range(0f, 2f));
         //spawn at a random edge
         Vector3 position;
         Quaternion rotation;
