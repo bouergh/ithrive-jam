@@ -55,6 +55,7 @@
   <ItemGroup>
      <Compile Include="Assets\PlayerMovement.cs" />
      <Compile Include="Assets\Scripts\Networking\PlayerMovementNetwork.cs" />
+     <Compile Include="Assets\Scripts\Tools\TransformDeepChildExtension.cs" />
      <Compile Include="Assets\VolumetricLight.cs" />
      <Compile Include="Assets\VolumetricLightRenderer.cs" />
      <None Include="Assets\BlitAdd.shader" />

@@ -76,12 +76,12 @@ MonoBehaviour:
   m_ScriptCRCCheck: 1
   m_MaxDelay: 0.01
   m_LogLevel: 2
-  m_PlayerPrefab: {fileID: 1146802180760486, guid: d714dbc4b1b468546b9cffe855d270b1,
+  m_PlayerPrefab: {fileID: 1979510930099112, guid: 35fcedcb8da6e104b8b9fb687f804010,
     type: 2}
-  m_AutoCreatePlayer: 0
-  m_PlayerSpawnMethod: 0
-  m_OfflineScene: 
-  m_OnlineScene: ArthurMultiTest
+  m_AutoCreatePlayer: 1
+  m_PlayerSpawnMethod: 1
+  m_OfflineScene: Menu
+  m_OnlineScene: Arthur2
   m_SpawnPrefabs: []
   m_CustomConfig: 0
   m_MaxConnections: 4

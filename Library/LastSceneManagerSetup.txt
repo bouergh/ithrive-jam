@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/Player Inputs Test Michael.unity
+- path: Assets/Scenes/Menu.unity
   isLoaded: 1
   isActive: 1

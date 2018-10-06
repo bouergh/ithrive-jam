@@ -6,6 +6,9 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/ArthurMultiTest.unity
-    guid: e9b87f1aa1483104a9b33dab8b0d452e
+    path: Assets/Scenes/Menu.unity
+    guid: 2f15236c2cc8b67449a0acc47efefffb
+  - enabled: 1
+    path: Assets/Scenes/Arthur2.unity
+    guid: 2ce15dc1c31cd6f47a89fe81dab4d1e3
   m_configObjects: {}
