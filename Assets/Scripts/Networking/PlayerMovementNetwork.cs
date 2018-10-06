@@ -95,6 +95,8 @@ public class PlayerMovementNetwork : NetworkBehaviour {
  
 	void Update()
 	{
+		if(!isLocalPlayer) return;
+		
 		if (Input.GetAxis("Fire1") > 0 && Input.GetAxis("Fire2") <= 0)
 		{
 			flashLight.active = true;
