@@ -13,11 +13,6 @@ public class EnemyMovement : MonoBehaviour
 
     Vector3 PlayerPosition = new Vector3(0, 0, 0);
 
-    // Use this for initialization
-    void Start()
-    {
-    }
-
     // Update is called once per frame
     void Update()
     {
