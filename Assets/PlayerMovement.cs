@@ -1,13 +1,31 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using System.Security.Policy;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
 
-	[SerializeField]
+	
+	
 	private float speed;
+
+	private bool shock = false;
+
+	public bool Shock
+	{
+		get { return shock; }
+		set { shock = value; }
+	}
+
+	[SerializeField]
+	private const float ORIGINAL_SPEED = 13;
+
+	public float Original_Speed
+	{
+		get { return ORIGINAL_SPEED; }
+	}
 
 	public float Speed
 	{
@@ -31,37 +49,44 @@ public class PlayerMovement : MonoBehaviour
 	private Vector3 turnedAim;
 
 	private Animator anim;
+
 	
 	// Use this for initialization
-	void Start () {
+	void Start ()
+	{
+		speed = ORIGINAL_SPEED;
 		rb = GetComponent<Rigidbody>();
 		flashLight = transform.GetChild(0).gameObject;
 		tagLight = transform.GetChild(1).gameObject;
 		anim = GetComponent<Animator>();
+		
 	}
 	
 	// Update is called once per frame
 	void Update()
 	{
-		if (Input.GetAxis("Fire1") > 0 && Input.GetAxis("Fire2") <= 0)
+		if (!shock)
 		{
-			flashLight.active = true;
-			flashLight.GetComponent<Light>().intensity = Input.GetAxis("Fire1") * lightIntensity;
-		}
-		else
-		{
-			flashLight.active = false;
-		}
+			if (Input.GetAxis("Fire1") > 0 && Input.GetAxis("Fire2") <= 0)
+			{
+				flashLight.active = true;
+				flashLight.GetComponent<Light>().intensity = Input.GetAxis("Fire1") * lightIntensity;
+			}
+			else
+			{
+				flashLight.active = false;
+			}
 
-		if (Input.GetAxis("Fire2") > 0 && Input.GetAxis("Fire1") <= 0)
-		{
-			tagLight.active = true;
-			tagLight.GetComponent<Light>().intensity = Input.GetAxis("Fire2") * lightIntensity;
-		}
-		else
-		{
-			tagLight.active = false;
-			
+			if (Input.GetAxis("Fire2") > 0 && Input.GetAxis("Fire1") <= 0)
+			{
+				tagLight.active = true;
+				tagLight.GetComponent<Light>().intensity = Input.GetAxis("Fire2") * lightIntensity;
+			}
+			else
+			{
+				tagLight.active = false;
+
+			}
 		}
 
 	}
