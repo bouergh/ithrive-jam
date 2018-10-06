@@ -5,6 +5,8 @@ using UnityEngine.Networking;
 
 public class PlayerMovementNetwork : NetworkBehaviour {
 
+	
+	[SyncVar] private Color objectColor;
 
 	[SerializeField]
 	private float speed;
@@ -18,8 +20,53 @@ public class PlayerMovementNetwork : NetworkBehaviour {
 	// Use this for initialization
 	void Start () {
 			rb = this.GetComponent<Rigidbody>();
+			//set color + camera culling mask to be red and see only red for server, VS blue for player
+			ChangeColor();
+	}
+
+	public void ChangeColor(){
+		if(isLocalPlayer){
+			if(isServer){
+				Camera.main.cullingMask &=  ~(1 << LayerMask.NameToLayer("BlueEnemy")); //to remove ONLY this layer from the culling mask
+				Debug.Log("is server local player");
+				objectColor = Color.red;
+				GetComponent<MeshRenderer>().material.color = objectColor; //change it on server
+				RpcChangeColor(gameObject,objectColor); //change it on client
+
+			}else //need this because server is BOTH
+			if(isClient){ //will be called by second instance because CLIENT
+			Camera.main.cullingMask &=  ~(1 << LayerMask.NameToLayer("RedEnemy")); //to remove ONLY this layer from the culling mask
+				Debug.Log("is client local player");
+				objectColor = Color.blue;
+				GetComponent<MeshRenderer>().material.color = objectColor; //change it on client
+				CmdChangeServerColor(gameObject, objectColor); //change it on server + call ChangeColor AGAIN on server
+			}
+		}
+		
 	}
 	
+
+	[Command]
+	public void CmdChangeServerColor(GameObject obj, Color col){
+		//receive color change from client and change it on server
+		Debug.Log("received a command");
+		obj.GetComponent<MeshRenderer>().material.color = col;
+			
+		//send the server player color to the client to change it
+		foreach(GameObject servObj in GameObject.FindGameObjectsWithTag("Player")){
+			servObj.GetComponent<PlayerMovementNetwork>().ChangeColor();
+		}
+	}
+	
+
+	[ClientRpc]
+	public void RpcChangeColor(GameObject obj, Color col){
+		obj.GetComponent<MeshRenderer>().material.color = col;
+	}
+
+ 
+
+
 	// Update is called once per frame
 	void FixedUpdate()
     {

@@ -152,6 +152,11 @@ Prefab:
       propertyPath: m_RootOrder
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 114680381624233596, guid: e8b7742598d3cc14d96fda73f1fa1bf6,
+        type: 2}
+      propertyPath: m_OnlineScene
+      value: ArthurMultiTest
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e8b7742598d3cc14d96fda73f1fa1bf6, type: 2}
   m_IsPrefabAsset: 0
