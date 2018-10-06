@@ -3,10 +3,27 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 
+
+// //IMPORTANT :
+// R = joueur rouge (serveur)
+// B = joueur bleu (client)
+// b = ennemi bleu
+// r = ennemi rouge
+
+// tag = rendre visible les monstres qu'on voit pour son allie
+// kill = tuer les monstres qu'on ne voit pas ou qui ont ete rendu visibles par l'allie
+
+// B voit r, B tag r avec lumiere rouge (LT)
+// B ne voit pas b, B tue b avec lumiere bleue (RT) et peut etre tue par b
+
+// R voit b, R tag b avec lumiere bleue (LT)
+// R ne voit pas r, R tue r avec lumiere rouge (RT) et peut etre tue par r
+
+
 public class PlayerMovementNetwork : NetworkBehaviour {
 
 	
-	[SyncVar] private Color objectColor;
+	[SyncVar] private Color objectColor, otherColor;
 
 	[SerializeField]
 	private float speed;
@@ -22,7 +39,7 @@ public class PlayerMovementNetwork : NetworkBehaviour {
 	[SerializeField] private float lightIntensity;
 
  	[SyncVar] private float x, z, xAim, zAim;
-	private GameObject flashLight, tagLight;
+	[SerializeField] private GameObject flashLight, tagLight;
 	[SyncVar] private Vector3 turnedAim;
 
 	private Animator anim;
@@ -36,8 +53,10 @@ public class PlayerMovementNetwork : NetworkBehaviour {
 	// Use this for initialization
 	void Start () {
 		rb = this.GetComponent<Rigidbody>();
-		flashLight = transform.GetChild(0).gameObject;
-		tagLight = transform.GetChild(1).gameObject;
+		//flashLight = transform.GetChild(0).gameObject; ///ATTENTION NE PAS CHANGER L'ORDRE
+		//tagLight = transform.GetChild(1).gameObject;
+		flashLight = transform.FindDeepChild("FlashLight").gameObject; ///ATTENTION NE PAS CHANGER LES NOMS
+		tagLight = transform.FindDeepChild("tagLight").gameObject;
 		anim = GetComponent<Animator>();
 		//if(isLocalPlayer)
 		{
@@ -50,34 +69,42 @@ public class PlayerMovementNetwork : NetworkBehaviour {
 
 	public void ChangeColor(){
 		if(isLocalPlayer){
-			if(isServer){
-				Camera.main.cullingMask &=  ~(1 << LayerMask.NameToLayer("BlueEnemy")); //to remove ONLY this layer from the culling mask
+			if(isServer){//joueur ROUGE
+				Camera.main.cullingMask &=  ~(1 << LayerMask.NameToLayer("RedEnemy")); //to remove ONLY this layer from the culling mask
 				Debug.Log("is server local player");
 				objectColor = Color.red;
+				otherColor = Color.blue;
 				//GetComponent<MeshRenderer>().material.color = objectColor; 
 				coat.material.color = objectColor;//change it on server
-				RpcChangeColor(gameObject,objectColor); //change it on client
+				flashLight.GetComponent<Light>().color = objectColor;
+				tagLight.GetComponent<Light>().color = otherColor;
 
-			}else //need this because server is BOTH
-			if(isClient){ //will be called by second instance because CLIENT
-			Camera.main.cullingMask &=  ~(1 << LayerMask.NameToLayer("RedEnemy")); //to remove ONLY this layer from the culling mask
+				RpcChangeColor(gameObject, objectColor, otherColor); //change it on client
+
+			}else //need this because server is BOTH 
+			if(isClient){ //will be called by second instance because CLIENT //joueur BLEU
+				Camera.main.cullingMask &=  ~(1 << LayerMask.NameToLayer("BlueEnemy")); //to remove ONLY this layer from the culling mask
 				Debug.Log("is client local player");
 				objectColor = Color.blue;
+				otherColor = Color.red;
 				//GetComponent<MeshRenderer>().material.color = objectColor; 
 				coat.material.color = objectColor;//change it on client
-				CmdChangeServerColor(gameObject, objectColor); //change it on server + call ChangeColor AGAIN on server
+				flashLight.GetComponent<Light>().color = objectColor;
+				tagLight.GetComponent<Light>().color = otherColor;
+				CmdChangeServerColor(gameObject, objectColor, otherColor); //change it on server + call ChangeColor AGAIN on server
 			}
 		}
 		
 	}
 	
-
 	[Command]
-	public void CmdChangeServerColor(GameObject obj, Color col){
+	public void CmdChangeServerColor(GameObject obj, Color col, Color otherCol){
 		//receive color change from client and change it on server
 		Debug.Log("received a command");
 		//obj.GetComponent<MeshRenderer>().material.color = col;
 		obj.GetComponent<PlayerMovementNetwork>().coat.material.color = col;
+		obj.GetComponent<PlayerMovementNetwork>().flashLight.GetComponent<Light>().color = col;
+		obj.GetComponent<PlayerMovementNetwork>().tagLight.GetComponent<Light>().color = otherCol;
 			
 		//send the server player color to the client to change it
 		foreach(GameObject servObj in GameObject.FindGameObjectsWithTag("Player")){
@@ -85,40 +112,112 @@ public class PlayerMovementNetwork : NetworkBehaviour {
 		}
 	}
 	
-
 	[ClientRpc]
-	public void RpcChangeColor(GameObject obj, Color col){
+	public void RpcChangeColor(GameObject obj, Color col, Color otherCol){
+		if(!isClient) return;
 		//obj.GetComponent<MeshRenderer>().material.color = col;
 		obj.GetComponent<PlayerMovementNetwork>().coat.material.color = col;
+		obj.GetComponent<PlayerMovementNetwork>().flashLight.GetComponent<Light>().color = col;
+		obj.GetComponent<PlayerMovementNetwork>().tagLight.GetComponent<Light>().color = otherCol;
 	}
 
- 
+	
 	void Update()
 	{
 		if(!isLocalPlayer) return;
+		if(!isClient) return;
 		
 		if (Input.GetAxis("Fire1") > 0 && Input.GetAxis("Fire2") <= 0)
 		{
-			flashLight.active = true;
-			flashLight.GetComponent<Light>().intensity = Input.GetAxis("Fire1") * lightIntensity;
+			float intensityMult = Input.GetAxis("Fire1");
+			//flashLight.active = true;
+			//flashLight.GetComponent<Light>().intensity = intensityMult * lightIntensity;
+			CmdOnFlashLight(gameObject, intensityMult);
 		}
 		else
 		{
-			flashLight.active = false;
+			//flashLight.active = false;
+			//if(flashLight.activeInHierarchy) 
+			CmdOffFlashLight(gameObject);
 		}
 
 		if (Input.GetAxis("Fire2") > 0 && Input.GetAxis("Fire1") <= 0)
 		{
-			tagLight.active = true;
-			tagLight.GetComponent<Light>().intensity = Input.GetAxis("Fire2") * lightIntensity;
+			float intensityMult = Input.GetAxis("Fire2");
+			//tagLight.active = true;
+			//tagLight.GetComponent<Light>().intensity = Input.GetAxis("Fire2") * lightIntensity;
+			CmdOnTagLight(gameObject, intensityMult);
 		}
 		else
 		{
-			tagLight.active = false;
-			
+			//tagLight.active = false;
+			//if(tagLight.activeInHierarchy) 
+			CmdOffTagLight(gameObject);
 		}
 
 	}
+
+	[Command]
+	public void CmdOnFlashLight(GameObject obj,float intensityMult){
+		obj.GetComponent<PlayerMovementNetwork>().flashLight.GetComponent<Light>().enabled = true;
+		obj.GetComponent<PlayerMovementNetwork>().flashLight.GetComponent<CapsuleCollider>().enabled = true;
+		obj.GetComponent<PlayerMovementNetwork>().flashLight.GetComponent<Light>().intensity = intensityMult * lightIntensity;	
+		if(isServer) RpcOnFlashLight(obj, intensityMult);
+	}
+	[ClientRpc]
+	public void RpcOnFlashLight(GameObject obj, float intensityMult){
+		if(!isClient) return;
+		//Debug.Log("change intensity of light");
+		//obj.SetActive(true);
+		obj.GetComponent<PlayerMovementNetwork>().flashLight.GetComponent<Light>().enabled = true;
+		obj.GetComponent<PlayerMovementNetwork>().flashLight.GetComponent<CapsuleCollider>().enabled = true;
+		obj.GetComponent<PlayerMovementNetwork>().flashLight.GetComponent<Light>().intensity = intensityMult * lightIntensity;	
+	}
+	[Command]
+	public void CmdOffFlashLight(GameObject obj){
+		obj.GetComponent<PlayerMovementNetwork>().flashLight.GetComponent<Light>().enabled = false;
+		obj.GetComponent<PlayerMovementNetwork>().flashLight.GetComponent<CapsuleCollider>().enabled = false;
+		if(isServer) RpcOffFlashLight(obj);
+	}
+	[ClientRpc]
+	public void RpcOffFlashLight(GameObject obj){
+		if(!isClient) return;
+		//Debug.Log("turn off light");
+		//obj.SetActive(false);	
+		obj.GetComponent<PlayerMovementNetwork>().flashLight.GetComponent<Light>().enabled = false;
+		obj.GetComponent<PlayerMovementNetwork>().flashLight.GetComponent<CapsuleCollider>().enabled = false;
+	}
+	[Command]
+	public void CmdOnTagLight(GameObject obj, float intensityMult){
+		obj.GetComponent<PlayerMovementNetwork>().tagLight.GetComponent<Light>().enabled = true;
+		obj.GetComponent<PlayerMovementNetwork>().tagLight.GetComponent<CapsuleCollider>().enabled = true;
+		obj.GetComponent<PlayerMovementNetwork>().tagLight.GetComponent<Light>().intensity = intensityMult * lightIntensity;	
+		if(isServer) RpcOnTagLight(obj, intensityMult);
+	}
+	[ClientRpc]
+	public void RpcOnTagLight(GameObject obj, float intensityMult){
+		if(!isClient) return;
+		//Debug.Log("change intensity of light");
+		//obj.SetActive(true);
+		obj.GetComponent<PlayerMovementNetwork>().tagLight.GetComponent<Light>().enabled = true;
+		obj.GetComponent<PlayerMovementNetwork>().tagLight.GetComponent<CapsuleCollider>().enabled = true;
+		obj.GetComponent<PlayerMovementNetwork>().tagLight.GetComponent<Light>().intensity = intensityMult * lightIntensity;	
+	}
+	[Command]
+	public void CmdOffTagLight(GameObject obj){
+		obj.GetComponent<PlayerMovementNetwork>().tagLight.GetComponent<Light>().enabled = false;
+		obj.GetComponent<PlayerMovementNetwork>().tagLight.GetComponent<CapsuleCollider>().enabled = false;
+		if(isServer) RpcOffTagLight(obj);
+	}
+	[ClientRpc]
+	public void RpcOffTagLight(GameObject obj){
+		if(!isClient) return;
+		//Debug.Log("turn off light");
+		//obj.SetActive(false);	
+		obj.GetComponent<PlayerMovementNetwork>().tagLight.GetComponent<Light>().enabled = false;
+		obj.GetComponent<PlayerMovementNetwork>().tagLight.GetComponent<CapsuleCollider>().enabled = false;
+	}
+
 
 	// Update is called once per frame
 	void FixedUpdate()
@@ -177,4 +276,58 @@ public class PlayerMovementNetwork : NetworkBehaviour {
 		transform.LookAt(turnedAim);
 
     }
+
+	void OnTriggerStay(Collider other){
+
+		if(!isLocalPlayer) return;
+
+		//Debug.Log("a) player detected trigger");
+		if(other.tag.EndsWith("Enemy")){
+			//Debug.Log("b) player detected enemy !");
+
+			// if(tagLight && ( //color is the same
+			// 	((LayerMask.LayerToName(other.gameObject.layer) == "RedEnemy") && (objectColor == Color.red)
+			// 	|| (LayerMask.LayerToName(other.gameObject.layer) == "BlueEnemy")) && (objectColor == Color.blue)
+			// )) { //show enemy to friendo
+			// 	Debug.Log("c) player will show enemy !");
+			// 	other.GetComponent<HealthNet>().CmdShowEnemy();	
+			if(tagLight.active){
+				//Debug.Log("c) tagging");
+				if(objectColor == Color.red){
+					//Debug.Log("d) player is Red");
+					if(LayerMask.LayerToName(other.gameObject.layer) == "RedEnemy"){
+						Debug.Log("e) red enemy too ! player will SHOW enemy !");
+						other.GetComponent<HealthNet>().CmdShowEnemy();	
+					}
+				}else{
+					if(objectColor == Color.blue){
+					//Debug.Log("d) player is Blue");
+						if(LayerMask.LayerToName(other.gameObject.layer) == "BlueEnemy"){
+							Debug.Log("e) blue enemy too ! player will SHOW enemy !");
+							other.GetComponent<HealthNet>().CmdShowEnemy();	
+						}
+					}
+				}
+			}
+			else if(flashLight.active && ( //color is different
+				(((LayerMask.LayerToName(other.gameObject.layer) == "BlueEnemy") && (objectColor == Color.red))
+				|| ((LayerMask.LayerToName(other.gameObject.layer) == "RedEnemy") && (objectColor == Color.blue)))
+			)){ //kill enemy
+				//Debug.Log("c) player will KILL enemy !");
+
+			}
+		}
+	}
+
+
+	// [Command]
+	// void CmdShowEnemy(GameObject obj){
+
+	// }
+	// [ClientRpc]
+	// void RpcShowEnemy(GameObject obj){
+
+	// }
+
+	
 }

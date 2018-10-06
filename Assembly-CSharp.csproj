@@ -57,6 +57,7 @@
      <Compile Include="Assets\Scripts\EnemyGenerator.cs" />
      <Compile Include="Assets\Scripts\EnemyMovement.cs" />
      <Compile Include="Assets\Scripts\Health.cs" />
+     <Compile Include="Assets\Scripts\Networking\HealthNet.cs" />
      <Compile Include="Assets\Scripts\Networking\PlayerMovementNetwork.cs" />
      <Compile Include="Assets\Scripts\ObjectPooler.cs" />
      <Compile Include="Assets\Scripts\Tools\TransformDeepChildExtension.cs" />
