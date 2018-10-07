@@ -30,6 +30,8 @@ public class PlayerHealth : NetworkBehaviour
     [SyncVar]
 	private string btnToPress = "";
 
+	private Animator anim;
+
 	public string BtnToPress
 	{
 		get { return btnToPress; }
@@ -46,6 +48,7 @@ public class PlayerHealth : NetworkBehaviour
 		player = GetComponent<PlayerMovement>();
 		healLight = transform.FindDeepChild("Point Light").gameObject;
 		healLight.GetComponent<Light>().enabled = false;
+		anim = GetComponent<Animator>();
 	}
 
     void OnCollisionEnter(Collision col)
@@ -132,6 +135,7 @@ public class PlayerHealth : NetworkBehaviour
                     go.GetComponent<PlayerMovementNetwork>().speed = 1f;
                     go.GetComponent<PlayerMovementNetwork>().shock = true;
                     go.GetComponent<PlayerHealth>().healLight.GetComponent<Light>().enabled = true;
+	                anim.SetBool("shake", true);
                     newKeyToPress();
                     break;
             }
@@ -209,6 +213,7 @@ public class PlayerHealth : NetworkBehaviour
         	case 5:
                      go.GetComponent<PlayerMovementNetwork>().speed = go.GetComponent<PlayerMovementNetwork>().Original_Speed / 2;
                      go.GetComponent<PlayerMovementNetwork>().shock = false;
+		        	anim.SetBool("shake", false);
                      break;
         }
 
