@@ -27,10 +27,14 @@ public class Spawner : NetworkBehaviour {
     float timeSinceSpawn = 0;
     int currSpawn = 0;
 
-    int[] toSpawn = new int[] {0, 0, 0, 0, 1, 1, 0, 1, 1, 1, 2, 1, 1, 1, 1, 0, 0, 1, 2, 0, 0, 1, 1, 1};
+    //int[] toSpawn = new int[] {0, 0, 0, 0, 1, 1, 0, 1, 1, 1, 2, 1, 1, 1, 1, 0, 0, 1, 2, 0, 0, 1, 1, 1};
+    int[] toSpawn = new int[] {0, 1, 2};
     public GameObject[] prefabs = new GameObject[3];
 
-    void Update()
+    
+
+
+    public void Update()
     {
         if (currSpawn < toSpawn.Length)
         {
@@ -79,12 +83,32 @@ public class Spawner : NetworkBehaviour {
 
         // Create an instance of the enemy prefab at the randomly selected spawn point's position and rotation.
         GameObject enemy = Instantiate(prefabs[tag], position, rotation);
-        NetworkServer.Spawn(enemy);
-        SetLayerRecursively(enemy, layer, Color.red);    }
+        SetLayerRecursively(enemy, layer, Color.red);   
+        NetworkServer.Spawn(enemy);  
+        RpcSetLayerRecursively(enemy, layer, Color.red); 
+        //Debug.Log("net spawned an enemy");
+        }
 
     void SetLayerRecursively(GameObject obj, int newLayer, Color color)
     {
         obj.layer = newLayer;
+        if(obj.GetComponent<MeshRenderer>() != null){
+            obj.GetComponent<MeshRenderer>().material.color = color;
+        }
+        foreach (Transform child in obj.transform)
+        {
+            SetLayerRecursively(child.gameObject, newLayer, color);
+        }
+    }
+
+
+    [ClientRpc]
+    void RpcSetLayerRecursively(GameObject obj, int newLayer, Color color)
+    {
+        obj.layer = newLayer;
+        if(obj.GetComponent<MeshRenderer>() != null){
+            obj.GetComponent<MeshRenderer>().material.color = color;
+        }
         foreach (Transform child in obj.transform)
         {
             SetLayerRecursively(child.gameObject, newLayer, color);

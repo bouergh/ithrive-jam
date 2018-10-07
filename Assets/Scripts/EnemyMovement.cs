@@ -20,16 +20,15 @@ public class EnemyMovement : NetworkBehaviour
         //( 9->rouge)
         //10->bleu
         int layer = this.gameObject.layer;
-        Vector3 pos = Vector3.zero;
-        //transform.position;
+        Vector3 pos = transform.position;
         //new Vector3(Random.Range(MIN_X,MAX_X), 0, Random.Range(MIN_Z, MAX_Z));
         foreach (GameObject cur in GameObject.FindGameObjectsWithTag("Player"))
         {
-            Debug.Log(cur.GetComponent<PlayerMovementNetwork>().objectColor);
+            //Debug.Log(cur.GetComponent<PlayerMovementNetwork>().objectColor);
             if ((layer == 9 && cur.GetComponent<PlayerMovementNetwork>().objectColor == Color.red) ||
                 (layer == 10 && cur.GetComponent<PlayerMovementNetwork>().objectColor == Color.blue))
             {
-                Debug.Log("found player "+layer);
+                //Debug.Log("found player "+layer);
                 pos = cur.GetComponent<Transform>().position;
             }
         }
@@ -56,6 +55,7 @@ public class EnemyMovement : NetworkBehaviour
         if (newPos.z < MIN_Z) { newPos.z = MIN_Z; }
 
         transform.position = newPos;
-        transform.rotation = Quaternion.LookRotation(newDir, new Vector3(0, 1, 0));
+        if(newDir != Vector3.zero)
+            transform.rotation = Quaternion.LookRotation(newDir, new Vector3(0, 1, 0));
     }
 }
