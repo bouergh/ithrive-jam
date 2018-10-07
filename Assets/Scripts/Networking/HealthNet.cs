@@ -55,7 +55,8 @@ public class HealthNet : NetworkBehaviour
     //     TakeDamage(Time.deltaTime * 25);
     // }
 
-    public void TakeDamage(float amount)
+    [Command]
+    public void CmdTakeDamage(float amount)
     {
         Debug.Log(gameObject.name+" took "+amount+" damage !");
         currentHealth -= amount;

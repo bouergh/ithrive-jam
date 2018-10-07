@@ -26,16 +26,8 @@ public class PlayerMovementNetwork : NetworkBehaviour {
 	[SyncVar] public Color objectColor, otherColor;
 	[SyncVar] public bool isRedPlayer;
 
-	[SerializeField]
-	private float speed;
-	public float Speed
-	{
-		get
-		{
-			return speed;
-		}
-		set { speed = value; }
-	}
+
+	[SerializeField] [SyncVar] public float speed;
 	
 	[SerializeField] private float lightIntensity;
 
@@ -51,9 +43,21 @@ public class PlayerMovementNetwork : NetworkBehaviour {
 
 	[SerializeField] private MeshRenderer coat;
 
-	// Use this for initialization
-	void Start () {
-		rb = this.GetComponent<Rigidbody>();
+    [SerializeField] [SyncVar] public bool shock = false;
+
+    [SerializeField]
+    private const float ORIGINAL_SPEED = 13;
+
+    public float Original_Speed
+    {
+        get { return ORIGINAL_SPEED; }
+    }
+
+
+    // Use this for initialization
+    void Start () {
+        speed = ORIGINAL_SPEED;
+        rb = this.GetComponent<Rigidbody>();
 		//flashLight = transform.GetChild(0).gameObject; ///ATTENTION NE PAS CHANGER L'ORDRE
 		//tagLight = transform.GetChild(1).gameObject;
 		flashLight = transform.FindDeepChild("FlashLight").gameObject; ///ATTENTION NE PAS CHANGER LES NOMS
@@ -131,7 +135,9 @@ public class PlayerMovementNetwork : NetworkBehaviour {
 	{
 		if(!isLocalPlayer) return;
 		if(!isClient) return;
-		
+        if (shock) return;
+
+
 		if (Input.GetAxis("Fire1") > 0 && Input.GetAxis("Fire2") <= 0)
 		{
 			float intensityMult = Input.GetAxis("Fire1");
@@ -287,8 +293,25 @@ public class PlayerMovementNetwork : NetworkBehaviour {
 		if(!isLocalPlayer) return;
 		if(!isClient) return;
 
-		//Debug.Log("a) player detected trigger");
-		if(other.tag.EndsWith("Enemy")){
+		if (other.gameObject.CompareTag("Player"))
+        {
+			Debug.Log("players colliding");
+            //PlayerHealth otherHealth = other.gameObject.GetComponent<PlayerHealth>();
+            //Debug.Log(otherHealth.BtnToPress);
+            //if (Input.GetButtonDown(otherHealth.BtnToPress))
+			if (Input.GetButtonDown("btnY")) //ok
+            {
+				if(gameObject.GetComponent<PlayerHealth>().nHits > 0){
+					Debug.Log( transform.position + " healing "+ other.transform.position);
+                	other.gameObject.GetComponent<PlayerHealth>().CmdRemoveEffect();
+				}
+            }
+        }
+
+
+        
+        //Debug.Log("a) player detected trigger");
+        if (other.tag.EndsWith("Enemy")){
 			//Debug.Log("b) player detected enemy " + other.gameObject.name);
 
 			// if(tagLight && ( //color is the same
@@ -333,8 +356,9 @@ public class PlayerMovementNetwork : NetworkBehaviour {
 	}
 	[Command]
 	void CmdDmgEnemy(GameObject obj){
-		if(isServer) obj.GetComponent<HealthNet>().TakeDamage(1f);
+		if(isServer) obj.GetComponent<HealthNet>().CmdTakeDamage(1f);
 	}
+
 
 	
 }
