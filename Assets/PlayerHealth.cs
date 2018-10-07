@@ -2,10 +2,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 using UnityStandardAssets.ImageEffects;
 using Random = UnityEngine.Random;
 
-public class PlayerHealth : MonoBehaviour
+public class PlayerHealth : NetworkBehaviour
 {
 
 	public bool hit = false, healing = false;
@@ -26,6 +27,7 @@ public class PlayerHealth : MonoBehaviour
 	private Color[] buttonColors = {new Color(57, 186, 75), new Color(42, 54, 55, 255), new Color(255, 176, 52, 255), new Color(207, 33, 39, 255)};
 	private String[] buttonNames = {"btnA", "btnX", "btnY", "btnB"};
 	[SerializeField]
+    [SyncVar]
 	private string btnToPress = "";
 
 	public string BtnToPress
@@ -44,53 +46,84 @@ public class PlayerHealth : MonoBehaviour
 		player = GetComponent<PlayerMovement>();
 		healLight = transform.GetChild(2).gameObject.GetComponent<Light>();
 		healLight.enabled = false;
-		//healLight.enabled = false;
 	}
+
+    void OnCollisionEnter(Collision col)
+    {
+        if (!isLocalPlayer) return;
+        if (col.gameObject.tag.EndsWith("Enemy"))
+        {
+            Hit();
+            col.gameObject.GetComponent<HealthNet>().TakeDamage(1000);
+        }
+    }
 
 	public void Hit()
 	{
-		
-	}
+        if (!isLocalPlayer) return;
+        //TODO : BRUIT QUAND ON SE FAIT HIT
+        if (nHits < 5)
+        {
+            nHits++;
+            switch (nHits)
+            {
 
-	public void Heal()
-	{
-		healLight.enabled = true;
-		newKeyToPress();
-	}
+                case 3:
+                    GetComponent<PlayerMovementNetwork>().Speed /= 2;
+                    break;
+                case 4:
+                    cam.gameObject.GetComponent<BlurOptimized>().enabled = true;
+                    break;
+                case 5:
+                    GetComponent<PlayerMovementNetwork>().Speed = 0;
+                    GetComponent<PlayerMovementNetwork>().Shock = true;
+                    healLight.enabled = true;
+                    newKeyToPress();
+                    break;
+            }
+        }
+    }
 
 	private void newKeyToPress()
 	{
-		int newIndex = 0;
-		do
-		{
-			
-			newIndex = Random.Range(0, 3);
-			
-		} while (newIndex == lightIndex);
-		
-		lightIndex = newIndex;
-		healLight.color = buttonColors[lightIndex];
-		btnToPress = buttonNames[lightIndex];
-		
-	}
+        //int newIndex = 0;
+        //do
+        //{
+        //	newIndex = Random.Range(0, 3);
+
+        //} while (newIndex == lightIndex);
+
+        // lightIndex = newIndex;
+        // healLight.color = buttonColors[lightIndex];
+        // btnToPress = buttonNames[lightIndex];
+        healLight.color = buttonColors[2];
+        Debug.Log("SET BTN TO PRESS TO" + buttonNames[2]);
+        btnToPress = buttonNames[2];
+
+    }
 
 	public void removeEffect()
 	{
-		switch (nHits)
-		{
-			case 3:
-				player.Speed *= 2;
-				break;
-			case 4:
-				cam.gameObject.GetComponent<BlurOptimized>().enabled = false;
-				break;
-			case 5:
-				player.Speed = player.Original_Speed/2;
-				player.Shock = false;
-				break;
-		}
+        //switch (nHits)
+        //{
+        //	case 3:
+        //              GetComponent<PlayerMovementNetwork>().Speed *= 2;
+        //		break;
+        //	case 4:
+        //		cam.gameObject.GetComponent<BlurOptimized>().enabled = false;
+        //		break;
+        //	case 5:
+        //              GetComponent<PlayerMovementNetwork>().Speed = GetComponent<PlayerMovementNetwork>().Original_Speed / 2;
+        //              GetComponent<PlayerMovementNetwork>().Shock = false;
+        //              break;
+        //}
 
-		nHits--;
+        GetComponent<PlayerMovementNetwork>().Speed *= 2;
+        cam.gameObject.GetComponent<BlurOptimized>().enabled = false;
+        GetComponent<PlayerMovementNetwork>().Speed = GetComponent<PlayerMovementNetwork>().Original_Speed / 2;
+        GetComponent<PlayerMovementNetwork>().Shock = false;
+
+        nHits--;
 		healing = false;
 
 		if (nHits == 0)
@@ -101,35 +134,5 @@ public class PlayerHealth : MonoBehaviour
 		{
 			newKeyToPress();
 		}
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		if (hit && nHits < 5)
-		{
-			nHits++;
-			switch (nHits)
-			{
-				case 3:
-					player.Speed /= 2;
-					break;
-				case 4:
-					cam.gameObject.GetComponent<BlurOptimized>().enabled = true;
-					break;
-				case 5:
-					player.Speed = 0;
-					player.Shock = true;
-					healLight.enabled = true;
-					newKeyToPress();
-					break;
-				
-				
-				
-			}
-
-			hit = false;
-			
-		}
-		
 	}
 }

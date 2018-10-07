@@ -51,9 +51,27 @@ public class PlayerMovementNetwork : NetworkBehaviour {
 
 	[SerializeField] private MeshRenderer coat;
 
-	// Use this for initialization
-	void Start () {
-		rb = this.GetComponent<Rigidbody>();
+    private bool shock = false;
+
+    public bool Shock
+    {
+        get { return shock; }
+        set { shock = value; }
+    }
+
+    [SerializeField]
+    private const float ORIGINAL_SPEED = 13;
+
+    public float Original_Speed
+    {
+        get { return ORIGINAL_SPEED; }
+    }
+
+
+    // Use this for initialization
+    void Start () {
+        speed = ORIGINAL_SPEED;
+        rb = this.GetComponent<Rigidbody>();
 		//flashLight = transform.GetChild(0).gameObject; ///ATTENTION NE PAS CHANGER L'ORDRE
 		//tagLight = transform.GetChild(1).gameObject;
 		flashLight = transform.FindDeepChild("FlashLight").gameObject; ///ATTENTION NE PAS CHANGER LES NOMS
@@ -131,6 +149,7 @@ public class PlayerMovementNetwork : NetworkBehaviour {
 	{
 		if(!isLocalPlayer) return;
 		if(!isClient) return;
+        if (shock) return;
 		
 		if (Input.GetAxis("Fire1") > 0 && Input.GetAxis("Fire2") <= 0)
 		{
@@ -287,8 +306,18 @@ public class PlayerMovementNetwork : NetworkBehaviour {
 		if(!isLocalPlayer) return;
 		if(!isClient) return;
 
-		//Debug.Log("a) player detected trigger");
-		if(other.tag.EndsWith("Enemy")){
+        if (other.CompareTag("Player"))
+        {
+            PlayerHealth otherHealth = other.GetComponent<PlayerHealth>();
+            Debug.Log(otherHealth.BtnToPress);
+            if (Input.GetButtonDown(otherHealth.BtnToPress))
+            {
+                otherHealth.removeEffect();
+            }
+        }
+
+        //Debug.Log("a) player detected trigger");
+        if (other.tag.EndsWith("Enemy")){
 			//Debug.Log("b) player detected enemy " + other.gameObject.name);
 
 			// if(tagLight && ( //color is the same
