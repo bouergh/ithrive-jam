@@ -23,7 +23,7 @@ using UnityEngine.Networking;
 public class PlayerMovementNetwork : NetworkBehaviour {
 
 	
-	[SyncVar] private Color objectColor, otherColor;
+	[SyncVar] public Color objectColor, otherColor;
 
 	[SerializeField]
 	private float speed;
