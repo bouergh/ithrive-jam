@@ -83,9 +83,9 @@ MonoBehaviour:
   m_OfflineScene: Menu
   m_OnlineScene: Arthur2
   m_SpawnPrefabs:
-  - {fileID: 1680531382594446, guid: 53feed5bed0f9d049a7d33c9bbcccebd, type: 2}
-  - {fileID: 1321561608323426, guid: 4df71d0849d528e41b7db9b34afa7e51, type: 2}
-  - {fileID: 1395919855218646, guid: c3ab1885fe997314db99f4de714ee83a, type: 2}
+  - {fileID: 1321561608323426, guid: 6636ae08852217e49974bbd8f7f871b3, type: 2}
+  - {fileID: 1680531382594446, guid: 0dcbdddc363da1f448c5437c71da542b, type: 2}
+  - {fileID: 1395919855218646, guid: 65d916c94beaa2343a07739c2f936cb0, type: 2}
   m_CustomConfig: 0
   m_MaxConnections: 4
   m_ConnectionConfig:

@@ -12,18 +12,24 @@ public class EnemyMovement : NetworkBehaviour
 
     public float vitesse;
 
-    Vector3 TargetPosition;
+    [SyncVar] Vector3 TargetPosition;
 
     Vector3 GetTargetPos()
     {
         //get layer
+        //( 9->rouge)
+        //10->bleu
         int layer = this.gameObject.layer;
-        Vector3 pos = new Vector3(Random.Range(MIN_X,MAX_X), 0, Random.Range(MIN_Z, MAX_Z));
+        Vector3 pos = Vector3.zero;
+        //transform.position;
+        //new Vector3(Random.Range(MIN_X,MAX_X), 0, Random.Range(MIN_Z, MAX_Z));
         foreach (GameObject cur in GameObject.FindGameObjectsWithTag("Player"))
         {
-            if (layer == 10 && cur.GetComponent<PlayerMovementNetwork>().objectColor == Color.red ||
-                layer == 9 && cur.GetComponent<PlayerMovementNetwork>().objectColor == Color.blue)
+            Debug.Log(cur.GetComponent<PlayerMovementNetwork>().objectColor);
+            if ((layer == 9 && cur.GetComponent<PlayerMovementNetwork>().objectColor == Color.red) ||
+                (layer == 10 && cur.GetComponent<PlayerMovementNetwork>().objectColor == Color.blue))
             {
+                Debug.Log("found player "+layer);
                 pos = cur.GetComponent<Transform>().position;
             }
         }

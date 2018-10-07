@@ -24,6 +24,7 @@ public class PlayerMovementNetwork : NetworkBehaviour {
 
 	
 	[SyncVar] public Color objectColor, otherColor;
+	[SyncVar] public bool isRedPlayer;
 
 	[SerializeField]
 	private float speed;
@@ -102,6 +103,8 @@ public class PlayerMovementNetwork : NetworkBehaviour {
 		//receive color change from client and change it on server
 		Debug.Log("received a command");
 		//obj.GetComponent<MeshRenderer>().material.color = col;
+		obj.GetComponent<PlayerMovementNetwork>().objectColor = col;
+		obj.GetComponent<PlayerMovementNetwork>().otherColor = otherCol;
 		obj.GetComponent<PlayerMovementNetwork>().coat.material.color = col;
 		obj.GetComponent<PlayerMovementNetwork>().flashLight.GetComponent<Light>().color = col;
 		obj.GetComponent<PlayerMovementNetwork>().tagLight.GetComponent<Light>().color = otherCol;
@@ -116,6 +119,8 @@ public class PlayerMovementNetwork : NetworkBehaviour {
 	public void RpcChangeColor(GameObject obj, Color col, Color otherCol){
 		if(!isClient) return;
 		//obj.GetComponent<MeshRenderer>().material.color = col;
+		obj.GetComponent<PlayerMovementNetwork>().objectColor = col;
+		obj.GetComponent<PlayerMovementNetwork>().otherColor = otherCol;
 		obj.GetComponent<PlayerMovementNetwork>().coat.material.color = col;
 		obj.GetComponent<PlayerMovementNetwork>().flashLight.GetComponent<Light>().color = col;
 		obj.GetComponent<PlayerMovementNetwork>().tagLight.GetComponent<Light>().color = otherCol;
