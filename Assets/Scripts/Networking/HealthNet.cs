@@ -11,7 +11,7 @@ public class HealthNet : NetworkBehaviour
 
     public int maxHealth;
     [SyncVar] float currentHealth;
-    [SyncVar] public string originLayer;
+    [SyncVar] public int originLayer;
     [SerializeField] private float invisBackDelay;
     [SyncVar] public bool visible = false;
 
@@ -19,20 +19,21 @@ public class HealthNet : NetworkBehaviour
     public void OnEnable(){
         currentHealth = maxHealth;
         //set "color"
-        originLayer = LayerMask.LayerToName(gameObject.layer);
+        originLayer = gameObject.layer;
     }
 
     [ClientRpc]
 	public void RpcShowEnemy(){
         Debug.Log("RPC SHOWING enemy "+gameObject.name);
         visible = true;
-        gameObject.layer = LayerMask.NameToLayer("VisibleEnemy");
+        GetComponent<EnemyMovement>().RpcSetLayerOnlyRecursively(LayerMask.NameToLayer("VisibleEnemy"));
         StartCoroutine(BackInvisible());
 	}
     [ClientRpc]
 	public void RpcHideEnemy(){
         Debug.Log("RPC HIDING enemy "+gameObject.name);
-        gameObject.layer = LayerMask.NameToLayer(originLayer);
+        //gameObject.layer = LayerMask.NameToLayer(originLayer);
+        GetComponent<EnemyMovement>().RpcSetLayerOnlyRecursively(originLayer);
         visible = false;
 	}
 
@@ -49,10 +50,10 @@ public class HealthNet : NetworkBehaviour
         gameObject.SetActive(false); //a changer car degat depend du framerate ici
 	}
 
-    void OnMouseOver()
-    {
-        TakeDamage(Time.deltaTime * 25);
-    }
+    // void OnMouseOver()
+    // {
+    //     TakeDamage(Time.deltaTime * 25);
+    // }
 
     public void TakeDamage(float amount)
     {

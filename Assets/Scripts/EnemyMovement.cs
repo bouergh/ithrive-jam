@@ -25,8 +25,8 @@ public class EnemyMovement : NetworkBehaviour
         foreach (GameObject cur in GameObject.FindGameObjectsWithTag("Player"))
         {
             //Debug.Log(cur.GetComponent<PlayerMovementNetwork>().objectColor);
-            if ((layer == 9 && cur.GetComponent<PlayerMovementNetwork>().objectColor == Color.red) ||
-                (layer == 10 && cur.GetComponent<PlayerMovementNetwork>().objectColor == Color.blue))
+            if ((GetComponent<HealthNet>().originLayer == 9 && cur.GetComponent<PlayerMovementNetwork>().objectColor == Color.red) ||
+                (GetComponent<HealthNet>().originLayer == 10 && cur.GetComponent<PlayerMovementNetwork>().objectColor == Color.blue))
             {
                 //Debug.Log("found player "+layer);
                 pos = cur.GetComponent<Transform>().position;
@@ -60,10 +60,11 @@ public class EnemyMovement : NetworkBehaviour
     }
 
     [ClientRpc]
-    public void RpcSetLayerRecursively(int newLayer, Color color)
+    public void RpcSetLayerRecursively(int newLayer, Color color)//should only be called at spawn by Spawner !!!
     {
         //Debug.Log("RPC setting layer recu");
         gameObject.layer = newLayer;
+        GetComponent<HealthNet>().originLayer = newLayer; //GOOD initialization of this
         if(GetComponent<SkinnedMeshRenderer>() != null){
            GetComponent<SkinnedMeshRenderer>().material.color = color;
            //Debug.Log("RPC setting layer recu");
@@ -84,6 +85,26 @@ public class EnemyMovement : NetworkBehaviour
         foreach (Transform child in obj.transform)
         {
             SetLayerRecursively(child.gameObject, newLayer, color);
+        }
+    }
+
+    [ClientRpc]
+    public void RpcSetLayerOnlyRecursively(int newLayer)
+    {
+        //Debug.Log("RPC setting layer recu");
+        gameObject.layer = newLayer;
+        foreach (Transform child in transform)
+        {
+            SetLayerRecursively(child.gameObject, newLayer);
+        }
+    }
+    public void SetLayerRecursively(GameObject obj, int newLayer)
+    {
+        //Debug.Log("setting layer recu");
+        obj.layer = newLayer;
+        foreach (Transform child in obj.transform)
+        {
+            SetLayerRecursively(child.gameObject, newLayer);
         }
     }
 }

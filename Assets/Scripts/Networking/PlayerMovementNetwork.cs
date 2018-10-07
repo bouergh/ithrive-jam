@@ -316,8 +316,8 @@ public class PlayerMovementNetwork : NetworkBehaviour {
 				}
 			}
 			else if(flashLight.GetComponent<Light>().enabled && ( //color is different
-				(((other.GetComponent<HealthNet>().originLayer == "BlueEnemy") && (objectColor == Color.blue))
-				|| ((other.GetComponent<HealthNet>().originLayer == "RedEnemy") && (objectColor == Color.red)))
+				(((other.GetComponent<HealthNet>().originLayer == LayerMask.NameToLayer("BlueEnemy")) && (objectColor == Color.blue))
+				|| ((other.GetComponent<HealthNet>().originLayer == LayerMask.NameToLayer("RedEnemy")) && (objectColor == Color.red)))
 			)){ //kill enemy
 				Debug.Log("c) player will DAMAGE enemy !");
 				CmdDmgEnemy(other.gameObject);

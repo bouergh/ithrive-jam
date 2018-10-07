@@ -87,7 +87,7 @@ GameObject:
   - component: {fileID: 114348949339471454}
   m_Layer: 0
   m_Name: normalEnemy
-  m_TagString: Untagged
+  m_TagString: normalEnemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -621,7 +621,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   destroyOnDeath: 1
   maxHealth: 7
-  originLayer: 
+  originLayer: 0
   invisBackDelay: 0.5
   visible: 0
 --- !u!114 &114689118585762596
