@@ -299,10 +299,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d90bc7e70518b4e81b8200fccf991e5a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  manager: {fileID: 0}
-  showGUI: 1
-  offsetX: 0
-  offsetY: 0
 --- !u!1 &764354387
 GameObject:
   m_ObjectHideFlags: 0
@@ -727,7 +723,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
 --- !u!1 &1525008365
 GameObject:
@@ -942,13 +938,19 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4825813835456500, guid: e8b7742598d3cc14d96fda73f1fa1bf6, type: 2}
       propertyPath: m_RootOrder
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 114400329459277052, guid: e8b7742598d3cc14d96fda73f1fa1bf6,
         type: 2}
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 114680381624233596, guid: e8b7742598d3cc14d96fda73f1fa1bf6,
+        type: 2}
+      propertyPath: m_PlayerPrefab
+      value: 
+      objectReference: {fileID: 1394884339058166, guid: 465d5c3e679524c69b385eea6e695a37,
+        type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e8b7742598d3cc14d96fda73f1fa1bf6, type: 2}
   m_IsPrefabAsset: 0

@@ -41,7 +41,7 @@ public class PlayerMovementNetwork : NetworkBehaviour {
 
 	private Vector3 facingVect = new Vector3(1,1,1);
 
-	[SerializeField] private MeshRenderer coat;
+	[SerializeField] private SkinnedMeshRenderer coat;
 
     [SerializeField] [SyncVar] public bool shock = false;
 
@@ -65,7 +65,7 @@ public class PlayerMovementNetwork : NetworkBehaviour {
 		anim = GetComponent<Animator>();
 		//if(isLocalPlayer)
 		{
-			coat = transform.FindDeepChild("coat").GetComponent<MeshRenderer>();
+			coat = transform.FindDeepChild("coat").GetComponent<SkinnedMeshRenderer>();
 			Debug.Log("coat is "+coat.gameObject.name);
 		}
 		//set color + camera culling mask to be red and see only red for server, VS blue for player
@@ -248,11 +248,11 @@ public class PlayerMovementNetwork : NetworkBehaviour {
 
 		if (x != 0 || z != 0)
 		{
-			anim.SetBool("walking", true);
+			anim.SetBool("Walking", true);
 		}
 		else
 		{
-			anim.SetBool("walking", false);
+			anim.SetBool("Walking", false);
 		}
 
 		xAim = Input.GetAxis("Aim X");
