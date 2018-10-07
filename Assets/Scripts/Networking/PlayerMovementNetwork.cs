@@ -360,7 +360,7 @@ public class PlayerMovementNetwork : NetworkBehaviour {
 	}
 	[Command]
 	void CmdDmgEnemy(GameObject obj){
-		if(isServer) obj.GetComponent<HealthNet>().CmdTakeDamage(1f);
+		if(isServer) obj.GetComponent<HealthNet>().CmdTakeDamage(obj, 1f);
 	}
 
 

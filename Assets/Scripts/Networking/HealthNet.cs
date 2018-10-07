@@ -45,9 +45,17 @@ public class HealthNet : NetworkBehaviour
     }
 
     [ClientRpc]
-	public void RpcKillEnemy(){
+	public void RpcKillEnemy(GameObject go){
         Debug.Log("RPC killing enemy "+gameObject.name);
-        gameObject.SetActive(false); //a changer car degat depend du framerate ici
+        go.SetActive(false); //a changer car degat depend du framerate ici
+        
+	}
+
+    [Command]
+    public void CmdKillEnemy(GameObject go){
+        //Debug.Log("RPC killing enemy "+gameObject.name);
+        go.SetActive(false); //a changer car degat depend du framerate ici
+        RpcKillEnemy(go);
 	}
 
     // void OnMouseOver()
@@ -56,7 +64,7 @@ public class HealthNet : NetworkBehaviour
     // }
 
     [Command]
-    public void CmdTakeDamage(float amount)
+    public void CmdTakeDamage(GameObject go, float amount)
     {
         Debug.Log(gameObject.name+" took "+amount+" damage !");
         currentHealth -= amount;
@@ -64,7 +72,21 @@ public class HealthNet : NetworkBehaviour
         {
             if (destroyOnDeath)
             {
-                RpcKillEnemy();
+                RpcKillEnemy(go);
+                gameObject.SetActive(false);
+            }
+        }
+    }
+    [ClientRpc]
+    public void RpcTakeDamage(GameObject go, float amount)
+    {
+        Debug.Log(go.name+" took "+amount+" damage !");
+        currentHealth -= amount;
+        if (currentHealth <= 0)
+        {
+            if (destroyOnDeath)
+            {
+                CmdKillEnemy(go);
                 gameObject.SetActive(false);
             }
         }

@@ -58,10 +58,16 @@ public class PlayerHealth : NetworkBehaviour
 				|| (( col.gameObject.GetComponent<HealthNet>().originLayer == LayerMask.NameToLayer("RedEnemy")) && (GetComponent<PlayerMovementNetwork>().objectColor == Color.red)))
 			){
                 CmdHit(gameObject);
-                col.gameObject.GetComponent<HealthNet>().CmdTakeDamage(1000);
+                CmdKillEnemy(col.gameObject);
+                col.gameObject.GetComponent<HealthNet>().CmdTakeDamage( col.gameObject, 20);
             }
             
         }
+    }
+
+    [Command]
+    public void CmdKillEnemy(GameObject go){
+        go.GetComponent<HealthNet>().RpcTakeDamage(go, 20);
     }
 
     [Command]
