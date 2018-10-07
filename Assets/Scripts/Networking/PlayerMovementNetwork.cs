@@ -295,15 +295,19 @@ public class PlayerMovementNetwork : NetworkBehaviour {
 
 		if (other.gameObject.CompareTag("Player"))
         {
+
+
+
 			Debug.Log("players colliding");
             //PlayerHealth otherHealth = other.gameObject.GetComponent<PlayerHealth>();
             //Debug.Log(otherHealth.BtnToPress);
             //if (Input.GetButtonDown(otherHealth.BtnToPress))
 			if (Input.GetButtonDown("btnY")) //ok
             {
-				if(gameObject.GetComponent<PlayerHealth>().nHits > 0){
+				if(other.gameObject.GetComponent<PlayerHealth>().healLight.GetComponent<Light>().enabled)
+				{
 					Debug.Log( transform.position + " healing "+ other.transform.position);
-                	other.gameObject.GetComponent<PlayerHealth>().CmdRemoveEffect();
+                	GetComponent<PlayerHealth>().CmdRemoveEffect(other.gameObject);
 				}
             }
         }
