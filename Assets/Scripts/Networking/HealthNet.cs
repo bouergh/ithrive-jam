@@ -12,6 +12,8 @@ public class HealthNet : NetworkBehaviour
     public int maxHealth;
     [SyncVar] float currentHealth;
     [SyncVar] public string originLayer;
+    [SerializeField] private float invisBackDelay;
+    [SyncVar] public bool visible = false;
 
 
     public void OnEnable(){
@@ -22,9 +24,25 @@ public class HealthNet : NetworkBehaviour
 
     [ClientRpc]
 	public void RpcShowEnemy(){
-        Debug.Log("RPC showing enemy "+gameObject.name);
+        Debug.Log("RPC SHOWING enemy "+gameObject.name);
+        visible = true;
         gameObject.layer = LayerMask.NameToLayer("VisibleEnemy");
+        StartCoroutine(BackInvisible());
 	}
+    [ClientRpc]
+	public void RpcHideEnemy(){
+        Debug.Log("RPC HIDING enemy "+gameObject.name);
+        gameObject.layer = LayerMask.NameToLayer(originLayer);
+        visible = false;
+	}
+
+    IEnumerator BackInvisible(){
+        visible = false;
+        yield return new WaitForSeconds(invisBackDelay); 
+        //if during this delay the player doesn't make "visible" again we can definitely hide it
+        if(visible == false) RpcHideEnemy();
+    }
+
     [ClientRpc]
 	public void RpcKillEnemy(){
         Debug.Log("RPC killing enemy "+gameObject.name);
