@@ -1,13 +1,31 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using System.Security.Policy;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
 
+	
 	[SerializeField]
 	private float speed;
+
+	private bool shock = false;
+
+	public bool Shock
+	{
+		get { return shock; }
+		set { shock = value; }
+	}
+
+	[SerializeField]
+	private const float ORIGINAL_SPEED = 13;
+
+	public float Original_Speed
+	{
+		get { return ORIGINAL_SPEED; }
+	}
 
 	public float Speed
 	{
@@ -33,38 +51,59 @@ public class PlayerMovement : MonoBehaviour
 	private Animator anim;
 	
 	// Use this for initialization
-	void Start () {
+	void Start ()
+	{
+		speed = ORIGINAL_SPEED;
 		rb = GetComponent<Rigidbody>();
 		flashLight = transform.GetChild(0).gameObject;
 		tagLight = transform.GetChild(1).gameObject;
 		anim = GetComponent<Animator>();
+		
 	}
 	
 	// Update is called once per frame
 	void Update()
 	{
-		if (Input.GetAxis("Fire1") > 0 && Input.GetAxis("Fire2") <= 0)
+		if (!shock)
 		{
-			flashLight.active = true;
-			flashLight.GetComponent<Light>().intensity = Input.GetAxis("Fire1") * lightIntensity;
-		}
-		else
-		{
-			flashLight.active = false;
-		}
+			if (Input.GetAxis("Fire1") > 0 && Input.GetAxis("Fire2") <= 0)
+			{
+				flashLight.active = true;
+				flashLight.GetComponent<Light>().intensity = Input.GetAxis("Fire1") * lightIntensity;
+			}
+			else
+			{
+				flashLight.active = false;
+			}
 
-		if (Input.GetAxis("Fire2") > 0 && Input.GetAxis("Fire1") <= 0)
-		{
-			tagLight.active = true;
-			tagLight.GetComponent<Light>().intensity = Input.GetAxis("Fire2") * lightIntensity;
-		}
-		else
-		{
-			tagLight.active = false;
-			
+			if (Input.GetAxis("Fire2") > 0 && Input.GetAxis("Fire1") <= 0)
+			{
+				tagLight.active = true;
+				tagLight.GetComponent<Light>().intensity = Input.GetAxis("Fire2") * lightIntensity;
+			}
+			else
+			{
+				tagLight.active = false;
+
+			}
 		}
 
 	}
+	
+	private void onTriggerStay(Collider other)
+	{
+		Debug.Log("Cunt");
+		if (other.CompareTag("Player"))
+		{
+			PlayerHealth otherHealth = other.GetComponent<PlayerHealth>();
+			Debug.Log(otherHealth.BtnToPress);
+			if (Input.GetButtonDown(otherHealth.BtnToPress))
+			{
+				otherHealth.removeEffect();
+			}
+		}
+	}
+
 
 	private void FixedUpdate()
 	{
@@ -77,11 +116,12 @@ public class PlayerMovement : MonoBehaviour
 
 		if (x != 0 || z != 0)
 		{
-			anim.SetBool("walking", true);
+			anim.SetBool("Walking", true);
+			anim.speed = Mathf.Sqrt((x * x) + (z * z));
 		}
 		else
 		{
-			anim.SetBool("walking", false);
+			anim.SetBool("Walking", false);
 		}
 
 		xAim = Input.GetAxis("Aim X");
@@ -98,7 +138,7 @@ public class PlayerMovement : MonoBehaviour
 		
 		//We set the velocity of the player with our new inputs
 		this.GetComponent<Rigidbody>().velocity = myTurnedInputs;
-		Debug.Log(xAim + " " + zAim);
+		
 		if (xAim != 0 || zAim != 0)
 		{
 			turnedAim = Quaternion.Euler(0, facing, 0) * aim;
