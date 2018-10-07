@@ -2,10 +2,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 using UnityStandardAssets.ImageEffects;
 using Random = UnityEngine.Random;
 
-public class PlayerHealth : MonoBehaviour
+public class PlayerHealth : NetworkBehaviour
 {
 
 	public bool hit = false, healing = false;
@@ -15,8 +16,8 @@ public class PlayerHealth : MonoBehaviour
 
 	private Camera cam;
 
-	[SerializeField]
-	private int nHits = 0;
+	[SerializeField][SyncVar]
+	public int nHits = 0;
 
 	private PlayerMovement player;
 	
@@ -26,6 +27,7 @@ public class PlayerHealth : MonoBehaviour
 	private Color[] buttonColors = {new Color(57, 186, 75), new Color(42, 54, 55, 255), new Color(255, 176, 52, 255), new Color(207, 33, 39, 255)};
 	private String[] buttonNames = {"btnA", "btnX", "btnY", "btnB"};
 	[SerializeField]
+    [SyncVar]
 	private string btnToPress = "";
 
 	public string BtnToPress
@@ -44,92 +46,168 @@ public class PlayerHealth : MonoBehaviour
 		player = GetComponent<PlayerMovement>();
 		healLight = transform.GetChild(2).gameObject.GetComponent<Light>();
 		healLight.enabled = false;
-		//healLight.enabled = false;
 	}
 
-	public void Hit()
-	{
-		
-	}
+    void OnCollisionEnter(Collision col)
+    {
+        if (!isLocalPlayer) return;
+        if (col.gameObject.tag.EndsWith("Enemy"))
+        {
+            if(( //color is SAME
+				(( col.gameObject.GetComponent<HealthNet>().originLayer == LayerMask.NameToLayer("BlueEnemy")) && (GetComponent<PlayerMovementNetwork>().objectColor == Color.blue))
+				|| (( col.gameObject.GetComponent<HealthNet>().originLayer == LayerMask.NameToLayer("RedEnemy")) && (GetComponent<PlayerMovementNetwork>().objectColor == Color.red)))
+			){
+                CmdHit();
+                col.gameObject.GetComponent<HealthNet>().CmdTakeDamage(1000);
+            }
+            
+        }
+    }
 
-	public void Heal()
+    [Command]
+	public void CmdHit()
 	{
-		healLight.enabled = true;
-		newKeyToPress();
-	}
+        
+        Debug.Log("cmd hit");
+        //TODO : BRUIT QUAND ON SE FAIT HIT
+        if (nHits < 5)
+        {
+            nHits++;
+            switch (nHits)
+            {
+                case 1:
+                    GetComponent<PlayerMovementNetwork>().speed = 0;
+                    GetComponent<PlayerMovementNetwork>().shock = true;
+                    healLight.enabled = true;
+                    return;
+
+                // case 3:
+                //     GetComponent<PlayerMovementNetwork>().Speed /= 2;
+                //     break;
+                // case 4:
+                //     cam.gameObject.GetComponent<BlurOptimized>().enabled = true;
+                //     break;
+                // case 5:
+                //     GetComponent<PlayerMovementNetwork>().Speed = 0;
+                //     GetComponent<PlayerMovementNetwork>().Shock = true;
+                //     healLight.enabled = true;
+                //     newKeyToPress();
+                //     break;
+            }
+        }
+        RpcHit();
+    }
+
+    [ClientRpc]
+    public void RpcHit(){
+        Debug.Log("rpc hit");
+        if (nHits < 5)
+        {
+            nHits++;
+            switch (nHits)
+            {
+                case 1:
+                    GetComponent<PlayerMovementNetwork>().speed = 0;
+                    GetComponent<PlayerMovementNetwork>().shock = true;
+                    healLight.enabled = true;
+                    return;
+
+                // case 3:
+                //     GetComponent<PlayerMovementNetwork>().Speed /= 2;
+                //     break;
+                // case 4:
+                //     cam.gameObject.GetComponent<BlurOptimized>().enabled = true;
+                //     break;
+                // case 5:
+                //     GetComponent<PlayerMovementNetwork>().Speed = 0;
+                //     GetComponent<PlayerMovementNetwork>().Shock = true;
+                //     healLight.enabled = true;
+                //     newKeyToPress();
+                //     break;
+            }
+        }
+    }
 
 	private void newKeyToPress()
 	{
-		int newIndex = 0;
-		do
-		{
-			
-			newIndex = Random.Range(0, 3);
-			
-		} while (newIndex == lightIndex);
-		
-		lightIndex = newIndex;
-		healLight.color = buttonColors[lightIndex];
-		btnToPress = buttonNames[lightIndex];
-		
-	}
+        //int newIndex = 0;
+        //do
+        //{
+        //	newIndex = Random.Range(0, 3);
 
-	public void removeEffect()
+        //} while (newIndex == lightIndex);
+
+        // lightIndex = newIndex;
+        // healLight.color = buttonColors[lightIndex];
+        // btnToPress = buttonNames[lightIndex];
+        healLight.color = buttonColors[2];
+        Debug.Log("SET BTN TO PRESS TO" + buttonNames[2]);
+        btnToPress = buttonNames[2];
+
+    }
+
+    [Command]
+	public void CmdRemoveEffect()
 	{
-		switch (nHits)
-		{
-			case 3:
-				player.Speed *= 2;
-				break;
-			case 4:
-				cam.gameObject.GetComponent<BlurOptimized>().enabled = false;
-				break;
-			case 5:
-				player.Speed = player.Original_Speed/2;
-				player.Shock = false;
-				break;
-		}
+        //switch (nHits)
+        //{
+        //	case 3:
+        //              GetComponent<PlayerMovementNetwork>().Speed *= 2;
+        //		break;
+        //	case 4:
+        //		cam.gameObject.GetComponent<BlurOptimized>().enabled = false;
+        //		break;
+        //	case 5:
+        //              GetComponent<PlayerMovementNetwork>().Speed = GetComponent<PlayerMovementNetwork>().Original_Speed / 2;
+        //              GetComponent<PlayerMovementNetwork>().Shock = false;
+        //              break;
+        //}
 
-		nHits--;
-		healing = false;
+        //GetComponent<PlayerMovementNetwork>().Speed *= 2;
+        //cam.gameObject.GetComponent<BlurOptimized>().enabled = false;
+        //GetComponent<PlayerMovementNetwork>().Speed = GetComponent<PlayerMovementNetwork>().Original_Speed / 2;
+        Debug.Log("cmd remove effect00 "+transform.position);
+        GetComponent<PlayerMovementNetwork>().shock = false;
+        //Debug.Log("original speed is "+GetComponent<PlayerMovementNetwork>().Original_Speed);
+        GetComponent<PlayerMovementNetwork>().speed= 50;//GetComponent<PlayerMovementNetwork>().Original_Speed;
+        healLight.enabled = false;
+        nHits = 0;
 
-		if (nHits == 0)
-		{
-			healLight.enabled = false;
-		}
-		else
-		{
-			newKeyToPress();
-		}
+        // nHits--;
+		// healing = false;
+
+		// if (nHits == 0)
+		// {
+		// 	healLight.enabled = false;
+		// }
+		// else
+		// {
+		// 	newKeyToPress();
+		// }
+
+        RpcRemoveEffet();
 	}
-	
-	// Update is called once per frame
-	void Update () {
-		if (hit && nHits < 5)
-		{
-			nHits++;
-			switch (nHits)
-			{
-				case 3:
-					player.Speed /= 2;
-					break;
-				case 4:
-					cam.gameObject.GetComponent<BlurOptimized>().enabled = true;
-					break;
-				case 5:
-					player.Speed = 0;
-					player.Shock = true;
-					healLight.enabled = true;
-					newKeyToPress();
-					break;
-				
-				
-				
-			}
 
-			hit = false;
-			
-		}
-		
-	}
+    [ClientRpc]
+    public void RpcRemoveEffet(){
+        Debug.Log("rpc remove effect00 "+transform.position);
+        GetComponent<PlayerMovementNetwork>().shock = false;
+        //Debug.Log("original speed is "+GetComponent<PlayerMovementNetwork>().Original_Speed);
+        GetComponent<PlayerMovementNetwork>().speed = 50;//GetComponent<PlayerMovementNetwork>().Original_Speed;
+        healLight.enabled = false;
+        nHits = 0;
+        Debug.Log("rpc remove effect DOOOOOOOONE "+transform.position);
+
+        // nHits--;
+		// healing = false;
+
+		// if (nHits == 0)
+		// {
+		// 	healLight.enabled = false;
+		// }
+		// else
+		// {
+		// 	newKeyToPress();
+		// }
+    }
 }

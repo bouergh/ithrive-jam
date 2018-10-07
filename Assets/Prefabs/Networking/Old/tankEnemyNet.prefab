@@ -83,8 +83,10 @@ GameObject:
   - component: {fileID: 114178490315587542}
   - component: {fileID: 114564808505155438}
   - component: {fileID: 65005245980372430}
+  - component: {fileID: 114954457639718864}
+  - component: {fileID: 114818082565613146}
   m_Layer: 0
-  m_Name: tankEnemy
+  m_Name: tankEnemyNet
   m_TagString: tankEnemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -592,6 +594,59 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   vitesse: 0.2
+--- !u!114 &114818082565613146
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1395919855218646}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1768714887, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_TransformSyncMode: 1
+  m_SendInterval: 0.1
+  m_SyncRotationAxis: 7
+  m_RotationSyncCompression: 0
+  m_SyncSpin: 0
+  m_MovementTheshold: 0.001
+  m_VelocityThreshold: 0.0001
+  m_SnapThreshold: 5
+  m_InterpolateRotation: 1
+  m_InterpolateMovement: 1
+--- !u!114 &114954457639718864
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1395919855218646}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 372142912, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SceneId:
+    m_Value: 0
+  m_AssetId:
+    i0: 195
+    i1: 171
+    i2: 24
+    i3: 133
+    i4: 254
+    i5: 153
+    i6: 115
+    i7: 20
+    i8: 219
+    i9: 153
+    i10: 244
+    i11: 222
+    i12: 113
+    i13: 78
+    i14: 232
+    i15: 58
+  m_ServerOnly: 1
+  m_LocalPlayerAuthority: 0
 --- !u!137 &137827016697981044
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 1

@@ -90,19 +90,19 @@ public class PlayerMovement : MonoBehaviour
 
 	}
 	
-	private void onTriggerStay(Collider other)
-	{
-		Debug.Log("Cunt");
-		if (other.CompareTag("Player"))
-		{
-			PlayerHealth otherHealth = other.GetComponent<PlayerHealth>();
-			Debug.Log(otherHealth.BtnToPress);
-			if (Input.GetButtonDown(otherHealth.BtnToPress))
-			{
-				otherHealth.removeEffect();
-			}
-		}
-	}
+	// private void onTriggerStay(Collider other)
+	// {
+	// 	Debug.Log("Cunt");
+	// 	if (other.CompareTag("Player"))
+	// 	{
+	// 		PlayerHealth otherHealth = other.GetComponent<PlayerHealth>();
+	// 		Debug.Log(otherHealth.BtnToPress);
+	// 		if (Input.GetButtonDown(otherHealth.BtnToPress))
+	// 		{
+	// 			otherHealth.removeEffect();
+	// 		}
+	// 	}
+	// }
 
 
 	private void FixedUpdate()
