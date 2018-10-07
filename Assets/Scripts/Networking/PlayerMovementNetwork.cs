@@ -280,6 +280,7 @@ public class PlayerMovementNetwork : NetworkBehaviour {
 	void OnTriggerStay(Collider other){
 
 		if(!isLocalPlayer) return;
+		if(!isClient) return;
 
 		//Debug.Log("a) player detected trigger");
 		if(other.tag.EndsWith("Enemy")){
@@ -291,25 +292,25 @@ public class PlayerMovementNetwork : NetworkBehaviour {
 			// )) { //show enemy to friendo
 			// 	Debug.Log("c) player will show enemy !");
 			// 	other.GetComponent<HealthNet>().CmdShowEnemy();	
-			if(tagLight.active){
+			if(tagLight.GetComponent<Light>().enabled){
 				//Debug.Log("c) tagging");
 				if(objectColor == Color.red){
 					//Debug.Log("d) player is Red");
-					if(LayerMask.LayerToName(other.gameObject.layer) == "RedEnemy"){
-						Debug.Log("e) red enemy too ! player will SHOW enemy !");
-						other.GetComponent<HealthNet>().CmdShowEnemy();	
+					if(LayerMask.LayerToName(other.gameObject.layer) == "BlueEnemy"){
+						//Debug.Log("e) blue enemy spotted by red player red light too ! player will SHOW enemy !");
+						CmdShowEnemy(other.gameObject);
 					}
 				}else{
 					if(objectColor == Color.blue){
 					//Debug.Log("d) player is Blue");
-						if(LayerMask.LayerToName(other.gameObject.layer) == "BlueEnemy"){
-							Debug.Log("e) blue enemy too ! player will SHOW enemy !");
-							other.GetComponent<HealthNet>().CmdShowEnemy();	
+						if(LayerMask.LayerToName(other.gameObject.layer) == "RedEnemy"){
+							Debug.Log("e) red enemy spotted by blue player blue light too ! player will SHOW enemy !");
+							CmdShowEnemy(other.gameObject);
 						}
 					}
 				}
 			}
-			else if(flashLight.active && ( //color is different
+			else if(flashLight.GetComponent<Light>().enabled && ( //color is different
 				(((LayerMask.LayerToName(other.gameObject.layer) == "BlueEnemy") && (objectColor == Color.red))
 				|| ((LayerMask.LayerToName(other.gameObject.layer) == "RedEnemy") && (objectColor == Color.blue)))
 			)){ //kill enemy
@@ -320,14 +321,10 @@ public class PlayerMovementNetwork : NetworkBehaviour {
 	}
 
 
-	// [Command]
-	// void CmdShowEnemy(GameObject obj){
-
-	// }
-	// [ClientRpc]
-	// void RpcShowEnemy(GameObject obj){
-
-	// }
+	[Command]
+	void CmdShowEnemy(GameObject obj){
+		if(isServer) obj.GetComponent<HealthNet>().RpcShowEnemy();
+	}
 
 	
 }

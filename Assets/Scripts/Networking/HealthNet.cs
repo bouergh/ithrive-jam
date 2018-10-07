@@ -20,12 +20,12 @@ public class HealthNet : NetworkBehaviour
         originLayer = LayerMask.LayerToName(gameObject.layer);
     }
 
-    [Command]
-	public void CmdShowEnemy(){
-            Debug.Log("CMD showing enemy "+gameObject.name);
-            gameObject.layer = LayerMask.NameToLayer("VisibleEnemy");
-            RpcShowEnemy();
-	}
+    // [Command]
+	// public void CmdShowEnemy(){
+    //         Debug.Log("CMD showing enemy "+gameObject.name);
+    //         gameObject.layer = LayerMask.NameToLayer("VisibleEnemy");
+    //         RpcShowEnemy();
+	// }
     [ClientRpc]
 	public void RpcShowEnemy(){
         Debug.Log("RPC showing enemy "+gameObject.name);
