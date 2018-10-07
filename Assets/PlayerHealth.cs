@@ -68,39 +68,37 @@ public class PlayerHealth : NetworkBehaviour
 	public void CmdHit(GameObject go)
 	{
 
-        go.GetComponent<PlayerMovementNetwork>().speed = 1f;
-        go.GetComponent<PlayerMovementNetwork>().shock = true;
-        go.GetComponent<PlayerHealth>().healLight.GetComponent<Light>().enabled = true;
-        RpcHit(gameObject);
+        
+        // go.GetComponent<PlayerMovementNetwork>().speed = 1f;
+        // go.GetComponent<PlayerMovementNetwork>().shock = true;
+        // go.GetComponent<PlayerHealth>().healLight.GetComponent<Light>().enabled = true;
 
+        // Debug.Log("rpc hit");
+        // if (nHits < 5)
+        // {
+        //     nHits++;
+        //     switch (nHits)
+        //     {
+        //         // case 1:
+        //         //     go.GetComponent<PlayerMovementNetwork>().speed = 1f;
+        //         //     go.GetComponent<PlayerMovementNetwork>().shock = true;
+        //         //     go.GetComponent<PlayerHealth>().healLight.GetComponent<Light>().enabled = true;
+        //         //     return;
 
-        Debug.Log("cmd hit");
-        //TODO : BRUIT QUAND ON SE FAIT HIT
-        if (nHits < 5)
-        {
-            nHits++;
-            switch (nHits)
-            {
-                case 1:
-                    go.GetComponent<PlayerMovementNetwork>().speed = 1f;
-                    go.GetComponent<PlayerMovementNetwork>().shock = true;
-                    go.GetComponent<PlayerHealth>().healLight.GetComponent<Light>().enabled = true;
-                    return;
-
-                // case 3:
-                //     GetComponent<PlayerMovementNetwork>().Speed /= 2;
-                //     break;
-                // case 4:
-                //     cam.gameObject.GetComponent<BlurOptimized>().enabled = true;
-                //     break;
-                // case 5:
-                //     GetComponent<PlayerMovementNetwork>().Speed = 0;
-                //     GetComponent<PlayerMovementNetwork>().Shock = true;
-                //     healLight.enabled = true;
-                //     newKeyToPress();
-                //     break;
-            }
-        }
+        //         case 3:
+        //             GetComponent<PlayerMovementNetwork>().speed /= 2;
+        //             break;
+        //         case 4:
+        //             cam.gameObject.GetComponent<BlurOptimized>().enabled = true;
+        //             break;
+        //         case 5:
+        //             go.GetComponent<PlayerMovementNetwork>().speed = 1f;
+        //             go.GetComponent<PlayerMovementNetwork>().shock = true;
+        //             go.GetComponent<PlayerHealth>().healLight.GetComponent<Light>().enabled = true;
+        //             newKeyToPress();
+        //             break;
+        //     }
+        // }
         RpcHit(gameObject);
     }
 
@@ -108,34 +106,34 @@ public class PlayerHealth : NetworkBehaviour
     public void RpcHit(GameObject go){
 
         
-        go.GetComponent<PlayerMovementNetwork>().speed = 1f;
-        go.GetComponent<PlayerMovementNetwork>().shock = true;
-        go.GetComponent<PlayerHealth>().healLight.GetComponent<Light>().enabled = true;
+        // go.GetComponent<PlayerMovementNetwork>().speed = 1f;
+        // go.GetComponent<PlayerMovementNetwork>().shock = true;
+        // go.GetComponent<PlayerHealth>().healLight.GetComponent<Light>().enabled = true;
 
         Debug.Log("rpc hit");
-        if (nHits < 5)
+        if (go.GetComponent<PlayerHealth>().nHits < 5)
         {
             nHits++;
-            switch (nHits)
+            switch (go.GetComponent<PlayerHealth>().nHits)
             {
-                case 1:
+                // case 1:
+                //     go.GetComponent<PlayerMovementNetwork>().speed = 1f;
+                //     go.GetComponent<PlayerMovementNetwork>().shock = true;
+                //     go.GetComponent<PlayerHealth>().healLight.GetComponent<Light>().enabled = true;
+                //     return;
+
+                case 3:
+                    GetComponent<PlayerMovementNetwork>().speed /= 2;
+                    break;
+                case 4:
+                    //cam.gameObject.GetComponent<BlurOptimized>().enabled = true;
+                    break;
+                case 5:
                     go.GetComponent<PlayerMovementNetwork>().speed = 1f;
                     go.GetComponent<PlayerMovementNetwork>().shock = true;
                     go.GetComponent<PlayerHealth>().healLight.GetComponent<Light>().enabled = true;
-                    return;
-
-                // case 3:
-                //     GetComponent<PlayerMovementNetwork>().Speed /= 2;
-                //     break;
-                // case 4:
-                //     cam.gameObject.GetComponent<BlurOptimized>().enabled = true;
-                //     break;
-                // case 5:
-                //     GetComponent<PlayerMovementNetwork>().Speed = 0;
-                //     GetComponent<PlayerMovementNetwork>().Shock = true;
-                //     healLight.enabled = true;
-                //     newKeyToPress();
-                //     break;
+                    newKeyToPress();
+                    break;
             }
         }
     }
@@ -162,40 +160,36 @@ public class PlayerHealth : NetworkBehaviour
 	public void CmdRemoveEffect(GameObject go)
 	{
         
-        go.GetComponent<PlayerHealth>().healLight.GetComponent<Light>().enabled = false;
-        //switch (nHits)
-        //{
-        //	case 3:
-        //              GetComponent<PlayerMovementNetwork>().Speed *= 2;
-        //		break;
-        //	case 4:
-        //		cam.gameObject.GetComponent<BlurOptimized>().enabled = false;
-        //		break;
-        //	case 5:
-        //              GetComponent<PlayerMovementNetwork>().Speed = GetComponent<PlayerMovementNetwork>().Original_Speed / 2;
-        //              GetComponent<PlayerMovementNetwork>().Shock = false;
+        
+        // switch (nHits)
+        // {
+        // 	case 3:
+        //              GetComponent<PlayerMovementNetwork>().speed *= 2;
+        // 		break;
+        // 	case 4:
+        // 		    //cam.gameObject.GetComponent<BlurOptimized>().enabled = false;
+        // 		break;
+        // 	case 5:
+        //              GetComponent<PlayerMovementNetwork>().speed = GetComponent<PlayerMovementNetwork>().Original_Speed / 2;
+        //              GetComponent<PlayerMovementNetwork>().shock = false;
         //              break;
-        //}
+        // }
 
-        //GetComponent<PlayerMovementNetwork>().Speed *= 2;
-        //cam.gameObject.GetComponent<BlurOptimized>().enabled = false;
-        //GetComponent<PlayerMovementNetwork>().Speed = GetComponent<PlayerMovementNetwork>().Original_Speed / 2;
-        Debug.Log("cmd remove effect00 "+transform.position);
-        go.GetComponent<PlayerMovementNetwork>().shock = false;
-        //Debug.Log("original speed is "+GetComponent<PlayerMovementNetwork>().Original_Speed);
-        go.GetComponent<PlayerMovementNetwork>().speed= go.GetComponent<PlayerMovementNetwork>().Original_Speed;
-        nHits = 0;
+        // Debug.Log("cmd remove effect00 "+transform.position);
+        // //Debug.Log("original speed is "+GetComponent<PlayerMovementNetwork>().Original_Speed);
+        // //go.GetComponent<PlayerMovementNetwork>().speed= go.GetComponent<PlayerMovementNetwork>().Original_Speed;
+        // //nHits = 0;
 
         // nHits--;
 		// healing = false;
 
 		// if (nHits == 0)
 		// {
-		// 	healLight.enabled = false;
+		// 	go.GetComponent<PlayerHealth>().healLight.GetComponent<Light>().enabled = false;
 		// }
 		// else
 		// {
-		// 	newKeyToPress();
+		// 	//newKeyToPress();
 		// }
 
         RpcRemoveEffet(go);
@@ -204,25 +198,35 @@ public class PlayerHealth : NetworkBehaviour
     [ClientRpc]
     public void RpcRemoveEffet(GameObject go){
         
-        go.GetComponent<PlayerHealth>().healLight.GetComponent<Light>().enabled = false;
+        switch (go.GetComponent<PlayerHealth>().nHits)
+        {
+        	case 3:
+                     go.GetComponent<PlayerMovementNetwork>().speed *= 2;
+        		break;
+        	case 4:
+        		    //cam.gameObject.GetComponent<BlurOptimized>().enabled = false;
+        		break;
+        	case 5:
+                     go.GetComponent<PlayerMovementNetwork>().speed = go.GetComponent<PlayerMovementNetwork>().Original_Speed / 2;
+                     go.GetComponent<PlayerMovementNetwork>().shock = false;
+                     break;
+        }
 
-        Debug.Log("rpc remove effect00 "+transform.position);
-        go.GetComponent<PlayerMovementNetwork>().shock = false;
+        Debug.Log("cmd remove effect00 "+transform.position);
         //Debug.Log("original speed is "+GetComponent<PlayerMovementNetwork>().Original_Speed);
-        go.GetComponent<PlayerMovementNetwork>().speed = go.GetComponent<PlayerMovementNetwork>().Original_Speed;
-        nHits = 0;
-        Debug.Log("rpc remove effect DOOOOOOOONE "+transform.position);
+        //go.GetComponent<PlayerMovementNetwork>().speed= go.GetComponent<PlayerMovementNetwork>().Original_Speed;
+        //nHits = 0;
 
-        // nHits--;
-		// healing = false;
+        go.GetComponent<PlayerHealth>().nHits--;
+		healing = false;
 
-		// if (nHits == 0)
-		// {
-		// 	healLight.enabled = false;
-		// }
-		// else
-		// {
-		// 	newKeyToPress();
-		// }
+		if (go.GetComponent<PlayerHealth>().nHits == 0)
+		{
+			go.GetComponent<PlayerHealth>().healLight.GetComponent<Light>().enabled = false;
+		}
+		else
+		{
+			//newKeyToPress();
+		}
     }
 }
