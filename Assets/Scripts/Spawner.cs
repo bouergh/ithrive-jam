@@ -23,7 +23,7 @@ public class Spawner : NetworkBehaviour {
     const int MIN_Z = -13;
     const int MAX_Z =50;
 
-    const int SPAWN_TIME = 1;
+    const int SPAWN_TIME = 3;
     float timeSinceSpawn = 0;
     int currSpawn = 0;
 

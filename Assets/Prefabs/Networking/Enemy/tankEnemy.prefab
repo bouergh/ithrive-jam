@@ -625,8 +625,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   destroyOnDeath: 1
-  maxHealth: 7
-  originLayer: 
+  maxHealth: 60
+  originLayer: 0
   invisBackDelay: 0.5
   visible: 0
 --- !u!114 &114932861206509482

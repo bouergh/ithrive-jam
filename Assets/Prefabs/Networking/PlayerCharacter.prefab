@@ -1129,11 +1129,12 @@ MonoBehaviour:
   objectColor: {r: 0, g: 0, b: 0, a: 0}
   otherColor: {r: 0, g: 0, b: 0, a: 0}
   isRedPlayer: 0
-  speed: 13
+  speed: 25
   lightIntensity: 50
   flashLight: {fileID: 0}
   tagLight: {fileID: 0}
   coat: {fileID: 0}
+  shock: 0
 --- !u!114 &114254327098861872
 MonoBehaviour:
   m_ObjectHideFlags: 1
