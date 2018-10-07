@@ -311,10 +311,11 @@ public class PlayerMovementNetwork : NetworkBehaviour {
 				}
 			}
 			else if(flashLight.GetComponent<Light>().enabled && ( //color is different
-				(((LayerMask.LayerToName(other.gameObject.layer) == "BlueEnemy") && (objectColor == Color.red))
-				|| ((LayerMask.LayerToName(other.gameObject.layer) == "RedEnemy") && (objectColor == Color.blue)))
+				(((other.GetComponent<HealthNet>().originLayer == "BlueEnemy") && (objectColor == Color.blue))
+				|| ((other.GetComponent<HealthNet>().originLayer == "RedEnemy") && (objectColor == Color.red)))
 			)){ //kill enemy
-				//Debug.Log("c) player will KILL enemy !");
+				Debug.Log("c) player will DAMAGE enemy !");
+				CmdDmgEnemy(other.gameObject);
 
 			}
 		}
@@ -324,6 +325,10 @@ public class PlayerMovementNetwork : NetworkBehaviour {
 	[Command]
 	void CmdShowEnemy(GameObject obj){
 		if(isServer) obj.GetComponent<HealthNet>().RpcShowEnemy();
+	}
+	[Command]
+	void CmdDmgEnemy(GameObject obj){
+		if(isServer) obj.GetComponent<HealthNet>().TakeDamage(1f);
 	}
 
 	

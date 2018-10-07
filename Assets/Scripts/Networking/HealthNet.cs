@@ -11,7 +11,7 @@ public class HealthNet : NetworkBehaviour
 
     public int maxHealth;
     [SyncVar] float currentHealth;
-    [SyncVar] string originLayer;
+    [SyncVar] public string originLayer;
 
 
     public void OnEnable(){
@@ -20,16 +20,15 @@ public class HealthNet : NetworkBehaviour
         originLayer = LayerMask.LayerToName(gameObject.layer);
     }
 
-    // [Command]
-	// public void CmdShowEnemy(){
-    //         Debug.Log("CMD showing enemy "+gameObject.name);
-    //         gameObject.layer = LayerMask.NameToLayer("VisibleEnemy");
-    //         RpcShowEnemy();
-	// }
     [ClientRpc]
 	public void RpcShowEnemy(){
         Debug.Log("RPC showing enemy "+gameObject.name);
         gameObject.layer = LayerMask.NameToLayer("VisibleEnemy");
+	}
+    [ClientRpc]
+	public void RpcKillEnemy(){
+        Debug.Log("RPC killing enemy "+gameObject.name);
+        gameObject.SetActive(false); //a changer car degat depend du framerate ici
 	}
 
     void OnMouseOver()
@@ -39,11 +38,13 @@ public class HealthNet : NetworkBehaviour
 
     public void TakeDamage(float amount)
     {
+        Debug.Log(gameObject.name+" took "+amount+" damage !");
         currentHealth -= amount;
         if (currentHealth <= 0)
         {
             if (destroyOnDeath)
             {
+                RpcKillEnemy();
                 gameObject.SetActive(false);
             }
         }
