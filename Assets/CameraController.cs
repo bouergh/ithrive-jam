@@ -19,12 +19,12 @@ public class CameraController : MonoBehaviour
 	// Use this for initialization
 	void Start ()
 	{
-		GameObject[] positionObjects = GameObject.FindGameObjectsWithTag("CameraPosition");
-		Debug.Log(positionObjects);
+		//GameObject[] positionObjects = GameObject.FindGameObjectsWithTag("CameraPosition");
+		/*Debug.Log(positionObjects);
 		for (int i = 0; i < positionObjects.Length; i++)
 		{
 			cameraPositions[i] = positionObjects[i].transform;
-		}
+		}*/
 
 		transform.position = cameraPositions[0].position;
 		targetPosition = cameraPositions[indexOfPosition].position;
@@ -38,7 +38,7 @@ public class CameraController : MonoBehaviour
 	
 	
 	// Update is called once per frame
-	void Update () {
+	void FixedUpdate () {
 		if (transform.position != cameraPositions[indexOfPosition].position)
 		{
 			float step = speed * Time.deltaTime;

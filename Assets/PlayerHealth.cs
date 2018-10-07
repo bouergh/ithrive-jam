@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityStandardAssets.ImageEffects;
 using Random = UnityEngine.Random;
 
-public class Health : MonoBehaviour
+public class PlayerHealth : MonoBehaviour
 {
 
 	public bool hit = false, healing = false;
@@ -25,9 +25,18 @@ public class Health : MonoBehaviour
 	[SerializeField]
 	private Color[] buttonColors = {new Color(57, 186, 75), new Color(42, 54, 55, 255), new Color(255, 176, 52, 255), new Color(207, 33, 39, 255)};
 	private String[] buttonNames = {"btnA", "btnX", "btnY", "btnB"};
+	[SerializeField]
 	private string btnToPress = "";
+
+	public string BtnToPress
+	{
+		get { return btnToPress; }
+		set { btnToPress = value; }
+	}
+
 	[SerializeField]
 	private Light healLight;
+
 
 	// Use this for initialization
 	void Start () {
@@ -35,6 +44,7 @@ public class Health : MonoBehaviour
 		player = GetComponent<PlayerMovement>();
 		healLight = transform.GetChild(2).gameObject.GetComponent<Light>();
 		healLight.enabled = false;
+		//healLight.enabled = false;
 	}
 
 	public void Hit()
@@ -64,7 +74,7 @@ public class Health : MonoBehaviour
 		
 	}
 
-	private void removeEffect()
+	public void removeEffect()
 	{
 		switch (nHits)
 		{

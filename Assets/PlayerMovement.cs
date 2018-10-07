@@ -8,7 +8,7 @@ public class PlayerMovement : MonoBehaviour
 {
 
 	
-	
+	[SerializeField]
 	private float speed;
 
 	private bool shock = false;
@@ -49,7 +49,6 @@ public class PlayerMovement : MonoBehaviour
 	private Vector3 turnedAim;
 
 	private Animator anim;
-
 	
 	// Use this for initialization
 	void Start ()
@@ -90,6 +89,21 @@ public class PlayerMovement : MonoBehaviour
 		}
 
 	}
+	
+	private void onTriggerStay(Collider other)
+	{
+		Debug.Log("Cunt");
+		if (other.CompareTag("Player"))
+		{
+			PlayerHealth otherHealth = other.GetComponent<PlayerHealth>();
+			Debug.Log(otherHealth.BtnToPress);
+			if (Input.GetButtonDown(otherHealth.BtnToPress))
+			{
+				otherHealth.removeEffect();
+			}
+		}
+	}
+
 
 	private void FixedUpdate()
 	{
@@ -102,11 +116,12 @@ public class PlayerMovement : MonoBehaviour
 
 		if (x != 0 || z != 0)
 		{
-			anim.SetBool("walking", true);
+			anim.SetBool("Walking", true);
+			anim.speed = Mathf.Sqrt((x * x) + (z * z));
 		}
 		else
 		{
-			anim.SetBool("walking", false);
+			anim.SetBool("Walking", false);
 		}
 
 		xAim = Input.GetAxis("Aim X");
@@ -123,7 +138,7 @@ public class PlayerMovement : MonoBehaviour
 		
 		//We set the velocity of the player with our new inputs
 		this.GetComponent<Rigidbody>().velocity = myTurnedInputs;
-		Debug.Log(xAim + " " + zAim);
+		
 		if (xAim != 0 || zAim != 0)
 		{
 			turnedAim = Quaternion.Euler(0, facing, 0) * aim;

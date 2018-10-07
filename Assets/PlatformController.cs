@@ -28,7 +28,7 @@ public class PlatformController : MonoBehaviour {
 	// Use this for initialization
 	void Start ()
 	{
-		platforms = GameObject.FindGameObjectsWithTag("Platform");
+		//platforms = GameObject.FindGameObjectsWithTag("Platform");
 		currentPlatform = platforms[0];
 		platforms[1].transform.position = new Vector3(platforms[1].transform.position.x, -initialHeight, platforms[1].transform.position.z);
 		platforms[2].transform.position = new Vector3(platforms[2].transform.position.x, -initialHeight, platforms[2].transform.position.z);
@@ -46,7 +46,7 @@ public class PlatformController : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	void FixedUpdate () {
 		if (currentPlatform != platforms[indexOfPlatform])
 		{
 			platforms[indexOfPlatform].transform.Translate(0, 0, speed);
@@ -56,10 +56,11 @@ public class PlatformController : MonoBehaviour {
 
 		if (lowePrevious)
 		{
-			platforms[indexOfPlatform-1].transform.Translate(0, 0, -speed);
-			if (platforms[indexOfPlatform].transform.position.y <= initialHeight)
-				currentPlatform = platforms[indexOfPlatform];
-			
+			platforms[indexOfPlatform - 1].transform.Translate(0, 0, -speed);
+			if (platforms[indexOfPlatform-1].transform.position.y <= -initialHeight){
+				platforms[indexOfPlatform-1].active = false;
+				lowePrevious = false;
+			}
 		}
 	}
 }

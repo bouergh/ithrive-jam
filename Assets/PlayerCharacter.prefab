@@ -993,7 +993,7 @@ Animator:
   m_GameObject: {fileID: 1979510930099112}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: ef0691902303844a79f56cc48a390c3f, type: 3}
-  m_Controller: {fileID: 9100000, guid: 302faa7d096d64cad84008e57791881a, type: 2}
+  m_Controller: {fileID: 0}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -1158,19 +1158,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 1979510930099112}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1470c9dedc22140848a39bc0b08b03b2, type: 3}
+  m_Script: {fileID: 11500000, guid: 329d582767b2d447db0c568d8729e996, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   hit: 0
   healing: 0
   timer: 0
-  maxTime: 2
+  maxTime: 0
   nHits: 0
   buttonColors:
-  - {r: 0.22352941, g: 0.7294118, b: 0.29411766, a: 1}
-  - {r: 0, g: 0.44243765, b: 0.9716981, a: 1}
-  - {r: 1, g: 0.83587676, b: 0.20392156, a: 1}
-  - {r: 0.9433962, g: 0, b: 0, a: 1}
+  - {r: 0.27429688, g: 0.8679245, b: 0.29282948, a: 1}
+  - {r: 0.16785331, g: 0.6375213, b: 0.8679245, a: 255}
+  - {r: 1, g: 0.8365737, b: 0, a: 255}
+  - {r: 0.9811321, g: 0.26379493, b: 0.26379493, a: 255}
   healLight: {fileID: 0}
 --- !u!114 &114945172095441826
 MonoBehaviour:
