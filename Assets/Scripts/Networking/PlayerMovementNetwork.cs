@@ -289,7 +289,7 @@ public class PlayerMovementNetwork : NetworkBehaviour {
 
 		//Debug.Log("a) player detected trigger");
 		if(other.tag.EndsWith("Enemy")){
-			//Debug.Log("b) player detected enemy !");
+			//Debug.Log("b) player detected enemy " + other.gameObject.name);
 
 			// if(tagLight && ( //color is the same
 			// 	((LayerMask.LayerToName(other.gameObject.layer) == "RedEnemy") && (objectColor == Color.red)

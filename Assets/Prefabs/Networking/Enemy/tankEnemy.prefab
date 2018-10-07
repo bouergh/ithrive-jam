@@ -80,11 +80,11 @@ GameObject:
   m_Component:
   - component: {fileID: 4397457158111378}
   - component: {fileID: 95541301986389976}
-  - component: {fileID: 114178490315587542}
   - component: {fileID: 114564808505155438}
   - component: {fileID: 65005245980372430}
   - component: {fileID: 114128823157377850}
   - component: {fileID: 114932861206509482}
+  - component: {fileID: 114816040242434362}
   m_Layer: 0
   m_Name: tankEnemy
   m_TagString: tankEnemy
@@ -601,19 +601,6 @@ MonoBehaviour:
     i15: 176
   m_ServerOnly: 0
   m_LocalPlayerAuthority: 0
---- !u!114 &114178490315587542
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1395919855218646}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a0d25c2da220b804ca1758424ba98822, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  destroyOnDeath: 1
-  maxHealth: 15
 --- !u!114 &114564808505155438
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -626,6 +613,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   vitesse: 0.03
+--- !u!114 &114816040242434362
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1395919855218646}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b48cd73a38291b84cb94a58e0c0ec44b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  destroyOnDeath: 1
+  maxHealth: 7
+  originLayer: 
+  invisBackDelay: 0.5
+  visible: 0
 --- !u!114 &114932861206509482
 MonoBehaviour:
   m_ObjectHideFlags: 1

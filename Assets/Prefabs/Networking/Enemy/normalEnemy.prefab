@@ -83,8 +83,8 @@ GameObject:
   - component: {fileID: 136608660352696270}
   - component: {fileID: 114965242237925726}
   - component: {fileID: 114103688516583534}
-  - component: {fileID: 114205942584487816}
   - component: {fileID: 114689118585762596}
+  - component: {fileID: 114348949339471454}
   m_Layer: 0
   m_Name: normalEnemy
   m_TagString: Untagged
@@ -608,7 +608,7 @@ MonoBehaviour:
   m_SnapThreshold: 5
   m_InterpolateRotation: 1
   m_InterpolateMovement: 1
---- !u!114 &114205942584487816
+--- !u!114 &114348949339471454
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
@@ -616,11 +616,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 1321561608323426}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a0d25c2da220b804ca1758424ba98822, type: 3}
+  m_Script: {fileID: 11500000, guid: b48cd73a38291b84cb94a58e0c0ec44b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   destroyOnDeath: 1
   maxHealth: 7
+  originLayer: 
+  invisBackDelay: 0.5
+  visible: 0
 --- !u!114 &114689118585762596
 MonoBehaviour:
   m_ObjectHideFlags: 1

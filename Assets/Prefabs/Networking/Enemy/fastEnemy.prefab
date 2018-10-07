@@ -96,11 +96,11 @@ GameObject:
   m_Component:
   - component: {fileID: 4461773099589686}
   - component: {fileID: 95155918856915148}
-  - component: {fileID: 114829499158369152}
   - component: {fileID: 114956074495728874}
   - component: {fileID: 136479902224548738}
   - component: {fileID: 114619277869730138}
   - component: {fileID: 114553463768498184}
+  - component: {fileID: 114184423321204194}
   m_Layer: 0
   m_Name: fastEnemy
   m_TagString: normalEnemy
@@ -268,6 +268,22 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &114184423321204194
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1680531382594446}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b48cd73a38291b84cb94a58e0c0ec44b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  destroyOnDeath: 1
+  maxHealth: 7
+  originLayer: 
+  invisBackDelay: 0.5
+  visible: 0
 --- !u!114 &114553463768498184
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -321,19 +337,6 @@ MonoBehaviour:
     i15: 43
   m_ServerOnly: 0
   m_LocalPlayerAuthority: 0
---- !u!114 &114829499158369152
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1680531382594446}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a0d25c2da220b804ca1758424ba98822, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  destroyOnDeath: 1
-  maxHealth: 7
 --- !u!114 &114956074495728874
 MonoBehaviour:
   m_ObjectHideFlags: 1

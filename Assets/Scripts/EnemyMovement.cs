@@ -66,7 +66,7 @@ public class EnemyMovement : NetworkBehaviour
         gameObject.layer = newLayer;
         if(GetComponent<SkinnedMeshRenderer>() != null){
            GetComponent<SkinnedMeshRenderer>().material.color = color;
-           Debug.Log("RPC setting layer recu");
+           //Debug.Log("RPC setting layer recu");
         }
         foreach (Transform child in transform)
         {
@@ -79,7 +79,7 @@ public class EnemyMovement : NetworkBehaviour
         obj.layer = newLayer;
         if(obj.GetComponent<SkinnedMeshRenderer>() != null){
             obj.GetComponent<SkinnedMeshRenderer>().material.color = color;
-            Debug.Log("RPC setting layer recu");
+            //Debug.Log("RPC setting layer recu");
         }
         foreach (Transform child in obj.transform)
         {
