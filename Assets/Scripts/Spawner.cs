@@ -33,9 +33,10 @@ public class Spawner : NetworkBehaviour {
 
     
 
-
+    [Server]
     public void Update()
     {
+        if(NetworkManager.singleton.numPlayers != 2) return;
         if (currSpawn < toSpawn.Length)
         {
             if (timeSinceSpawn >= SPAWN_TIME)
@@ -54,6 +55,7 @@ public class Spawner : NetworkBehaviour {
         }
     }
 
+    [Server]
     void Spawn(int tag, int layer)
     {
         //spawn at a random edge
@@ -83,35 +85,38 @@ public class Spawner : NetworkBehaviour {
 
         // Create an instance of the enemy prefab at the randomly selected spawn point's position and rotation.
         GameObject enemy = Instantiate(prefabs[tag], position, rotation);
-        SetLayerRecursively(enemy, layer, Color.red);   
+        Color col = (layer == 10) ? Color.blue : Color.red;
+        enemy.GetComponent<EnemyMovement>().SetLayerRecursively(enemy, layer, col);   
         NetworkServer.Spawn(enemy);  
-        RpcSetLayerRecursively(enemy, layer, Color.red); 
+        enemy.GetComponent<EnemyMovement>().RpcSetLayerRecursively(layer, col); 
         //Debug.Log("net spawned an enemy");
         }
 
-    void SetLayerRecursively(GameObject obj, int newLayer, Color color)
-    {
-        obj.layer = newLayer;
-        if(obj.GetComponent<MeshRenderer>() != null){
-            obj.GetComponent<MeshRenderer>().material.color = color;
-        }
-        foreach (Transform child in obj.transform)
-        {
-            SetLayerRecursively(child.gameObject, newLayer, color);
-        }
-    }
+
+    // [Server]
+    // public void SetLayerRecursively(GameObject obj, int newLayer, Color color)
+    // {
+    //     obj.layer = newLayer;
+    //     if(obj.GetComponent<MeshRenderer>() != null){
+    //         obj.GetComponent<MeshRenderer>().material.color = color;
+    //     }
+    //     foreach (Transform child in obj.transform)
+    //     {
+    //         SetLayerRecursively(child.gameObject, newLayer, color);
+    //     }
+    // }
 
 
-    [ClientRpc]
-    void RpcSetLayerRecursively(GameObject obj, int newLayer, Color color)
-    {
-        obj.layer = newLayer;
-        if(obj.GetComponent<MeshRenderer>() != null){
-            obj.GetComponent<MeshRenderer>().material.color = color;
-        }
-        foreach (Transform child in obj.transform)
-        {
-            SetLayerRecursively(child.gameObject, newLayer, color);
-        }
-    }
+    // [ClientRpc]
+    // void RpcSetLayerRecursively(GameObject obj, int newLayer, Color color)
+    // {
+    //     obj.layer = newLayer;
+    //     if(obj.GetComponent<MeshRenderer>() != null){
+    //         obj.GetComponent<MeshRenderer>().material.color = color;
+    //     }
+    //     foreach (Transform child in obj.transform)
+    //     {
+    //         RpcSetLayerRecursively(child.gameObject, newLayer, color);
+    //     }
+    // }
 }

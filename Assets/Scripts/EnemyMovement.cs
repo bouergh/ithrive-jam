@@ -58,4 +58,32 @@ public class EnemyMovement : NetworkBehaviour
         if(newDir != Vector3.zero)
             transform.rotation = Quaternion.LookRotation(newDir, new Vector3(0, 1, 0));
     }
+
+    [ClientRpc]
+    public void RpcSetLayerRecursively(int newLayer, Color color)
+    {
+        //Debug.Log("RPC setting layer recu");
+        gameObject.layer = newLayer;
+        if(GetComponent<SkinnedMeshRenderer>() != null){
+           GetComponent<SkinnedMeshRenderer>().material.color = color;
+           Debug.Log("RPC setting layer recu");
+        }
+        foreach (Transform child in transform)
+        {
+            SetLayerRecursively(child.gameObject, newLayer, color);
+        }
+    }
+    public void SetLayerRecursively(GameObject obj, int newLayer, Color color)
+    {
+        //Debug.Log("setting layer recu");
+        obj.layer = newLayer;
+        if(obj.GetComponent<SkinnedMeshRenderer>() != null){
+            obj.GetComponent<SkinnedMeshRenderer>().material.color = color;
+            Debug.Log("RPC setting layer recu");
+        }
+        foreach (Transform child in obj.transform)
+        {
+            SetLayerRecursively(child.gameObject, newLayer, color);
+        }
+    }
 }
