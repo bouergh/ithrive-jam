@@ -109,6 +109,7 @@ public class PlayerMovement : MonoBehaviour
 	{
 		//facing will be used to make the character move relative to the camera
 		float facing = Camera.main.transform.eulerAngles.y;
+		float facingAim = Camera.main.transform.eulerAngles.z;
 
 		//Set the variables according to the imput. They will be used for the movement of the player
 		x = Input.GetAxis("Horizontal");
@@ -141,7 +142,9 @@ public class PlayerMovement : MonoBehaviour
 		
 		if (xAim != 0 || zAim != 0)
 		{
-			turnedAim = Quaternion.Euler(0, facing, 0) * aim;
+			
+			turnedAim = Quaternion.Euler(0, 0, facingAim) * aim;
+			Debug.Log(facing);
 		}
 		else
 		{
