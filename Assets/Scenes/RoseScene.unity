@@ -153,15 +153,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 026c1db44e986cf41893c8b22267c057, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spawnTime: 1
-  tags:
-  - normalEnemy
-  - tankEnemy
-  - fastEnemy
   waves:
-  - countFastEnemies: 10
-    countNormEnemies: 5
-    countTankEnemies: 2
+  - countFast: 10
+    countNorm: 5
+    countTank: 2
 --- !u!1 &378134369
 GameObject:
   m_ObjectHideFlags: 0
@@ -273,15 +268,15 @@ MonoBehaviour:
   - amountToPool: 10
     objectToPool: {fileID: 1321561608323426, guid: 6636ae08852217e49974bbd8f7f871b3,
       type: 2}
-    shouldExpand: 1
+    shouldExpand: 0
   - amountToPool: 5
     objectToPool: {fileID: 1680531382594446, guid: 0dcbdddc363da1f448c5437c71da542b,
       type: 2}
-    shouldExpand: 1
+    shouldExpand: 0
   - amountToPool: 2
     objectToPool: {fileID: 1395919855218646, guid: 65d916c94beaa2343a07739c2f936cb0,
       type: 2}
-    shouldExpand: 1
+    shouldExpand: 0
 --- !u!1 &1630231457
 GameObject:
   m_ObjectHideFlags: 0
