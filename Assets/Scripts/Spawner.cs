@@ -27,8 +27,8 @@ public class Spawner : NetworkBehaviour {
     float timeSinceSpawn = 0;
     int currSpawn = 0;
 
-    //int[] toSpawn = new int[] {0, 0, 0, 0, 1, 1, 0, 1, 1, 1, 2, 1, 1, 1, 1, 0, 0, 1, 2, 0, 0, 1, 1, 1};
-    int[] toSpawn = new int[] {0, 1, 2, 0, 0};
+    int[] toSpawn = new int[] {0, 0, 0, 0, 1, 1, 0, 1, 1, 1, 2, 1, 1, 1, 1, 0, 0, 1, 2, 0, 0, 1, 1, 1};
+    //int[] toSpawn = new int[] {0, 1, 2, 0, 0};
     public GameObject[] prefabs = new GameObject[3];
 
     
@@ -43,7 +43,7 @@ public class Spawner : NetworkBehaviour {
             {
                 // spawn a random enemy from the lot
                 Spawn(toSpawn[currSpawn], 9);
-                //Spawn(toSpawn[currSpawn], 10);
+                Spawn(toSpawn[currSpawn], 10);
                 currSpawn++;
                 timeSinceSpawn = 0;
             }
